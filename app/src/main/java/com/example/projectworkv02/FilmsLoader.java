@@ -1,6 +1,5 @@
 package com.example.projectworkv02;
 
-import android.content.ContentValues;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -8,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.example.projectworkv02.internet.InternetCalls;
-import com.example.projectworkv02.models.Film;
+import com.example.projectworkv02.database.Film;
 
 import java.util.ArrayList;
 

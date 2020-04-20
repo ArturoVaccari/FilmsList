@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,12 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectworkv02.FilmsLoader;
 import com.example.projectworkv02.MainActivity;
 import com.example.projectworkv02.adapters.FilmsAdapter;
-import com.example.projectworkv02.internet.InternetCalls;
 import com.example.projectworkv02.R;
-import com.example.projectworkv02.models.Film;
+import com.example.projectworkv02.database.Film;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<Film>>{
 
@@ -51,8 +48,9 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @NonNull
     @Override
     public Loader<ArrayList<Film>> onCreateLoader(int id, @Nullable Bundle args) {
-        FilmsLoader filmsLoader = new FilmsLoader(getActivity());
-        return filmsLoader;
+        //FilmsLoader filmsLoader = new FilmsLoader(getActivity());
+        //return filmsLoader;
+        return null;
     }
 
     @Override

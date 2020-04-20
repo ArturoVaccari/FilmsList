@@ -1,4 +1,4 @@
-package com.example.projectworkv02.models;
+package com.example.projectworkv02.database;
 
 public class Film {
 

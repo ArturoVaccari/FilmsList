@@ -2,8 +2,9 @@ package com.example.projectworkv02;
 
 import android.os.Bundle;
 
+import com.example.projectworkv02.database.Film;
+import com.example.projectworkv02.database.FilmDB;
 import com.example.projectworkv02.internet.InternetCalls;
-import com.example.projectworkv02.models.Film;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Film> listFilms;
+    private InternetCalls internetCalls = new InternetCalls();
+    public static FilmDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        db = new FilmDB(this);
+
         listFilms = new ArrayList<>();
+        internetCalls.chiamataInternet(Strings.FILM, Strings.UPCOMING, Strings.ITALIAN, this);
 
 
     }
