@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.filmDetailes.FilmDetailes" />
+
+        <provider
+            android:authorities="com.example.projectworkv02.database.ContentProvider"
+            android:name=".database.FilmProvider"/>
     </application>
 
 </manifest>

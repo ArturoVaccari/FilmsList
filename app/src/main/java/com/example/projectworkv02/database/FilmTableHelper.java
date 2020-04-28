@@ -11,7 +11,7 @@ public class FilmTableHelper implements BaseColumns {
     public static final String IMGLARGE = "imglarge";
 
     public static final String CREATE = "CREATE TABLE " + TABLE_NAME + " ( " +
-            _ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+            _ID + " INTEGER PRIMARY KEY , " +
             NAME + " TEXT , " +
             DESCRIPTION + " TEXT , " +
             IMGCARDBOARD + " TEXT , " +

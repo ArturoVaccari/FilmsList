@@ -26,6 +26,6 @@ public class FilmsLoader extends AsyncTaskLoader<ArrayList<Film>> {
         InternetCalls internetCalls = new InternetCalls();
         internetCalls.chiamataInternet(Strings.FILM, Strings.UPCOMING, Strings.ITALIAN, context);
 
-        return MainActivity.listFilms;
+        return null;
     }
 }

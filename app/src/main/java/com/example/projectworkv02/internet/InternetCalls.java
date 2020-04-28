@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.projectworkv02.MainActivity;
 import com.example.projectworkv02.database.Film;
 import com.example.projectworkv02.database.FilmDB;
+import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
 
 import org.json.JSONArray;
@@ -26,7 +27,7 @@ public class InternetCalls {
 
     private SQLiteDatabase db;
 
-    public void chiamataInternet (String tipo, String chiamata, String language, Context context) {
+    public void chiamataInternet (String tipo, String chiamata, String language, final Context context) {
 
         db = new FilmDB(context).getWritableDatabase();
 
@@ -45,24 +46,17 @@ public class InternetCalls {
                             JSONArray films = object.getJSONArray("results");
                             for(int i = 0; i<films.length(); i++) {
                                 JSONObject obj = films.getJSONObject(i);
-                                Film film = new Film();
-                                film.setName(obj.getString("original_title"));
-                                film.setDescription(obj.getString("overview"));
-                                film.setImgCardboard(obj.getString("poster_path"));
-                                film.setImgLarge(obj.getString("backdrop_path"));
-                                MainActivity.listFilms.add(film);
 
                                 ContentValues contentValues = new ContentValues();
-                                contentValues.put(FilmTableHelper.NAME, film.getName());
-                                contentValues.put(FilmTableHelper.DESCRIPTION, film.getDescription());
-                                contentValues.put(FilmTableHelper.IMGCARDBOARD, film.getImgCardboard());
-                                contentValues.put(FilmTableHelper.IMGLARGE, film.getImgLarge());
+                                contentValues.put(FilmTableHelper._ID, obj.getLong("id"));
+                                contentValues.put(FilmTableHelper.NAME, obj.getString("title"));
+                                contentValues.put(FilmTableHelper.DESCRIPTION, obj.getString("overview"));
+                                contentValues.put(FilmTableHelper.IMGCARDBOARD, obj.getString("poster_path"));
+                                contentValues.put(FilmTableHelper.IMGLARGE, obj.getString("backdrop_path"));
 
-                                long result = db.insert(FilmTableHelper.TABLE_NAME, null, contentValues);
-                                Log.d(TAG, "film inserito " + result);
+                                context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
                             }
 
-                            Log.d(TAG, "onResponse: " + MainActivity.listFilms.size());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

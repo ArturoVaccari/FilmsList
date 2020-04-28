@@ -1,35 +1,32 @@
 package com.example.projectworkv02.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
+import android.content.Intent;
+import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.projectworkv02.MainActivity;
+
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.Strings;
-import com.example.projectworkv02.database.Film;
-import com.example.projectworkv02.ui.filmDetailes.FilmDetailes;
 
-import java.util.ArrayList;
+import com.example.projectworkv02.ui.filmDetailes.FilmDetailes;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
 
     private Context context;
-    private ArrayList<Film> listFilms;
+    private Cursor film;
 
-    public FilmsAdapter(Context context, ArrayList<Film> listFilms) {
+    public FilmsAdapter(Context context, Cursor film) {
         this.context = context;
-        this.listFilms = listFilms;
+        this.film = film;
     }
 
     @NonNull
@@ -41,26 +38,38 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
+        /**for (int i = 0; i<film.getCount(); i++) {
+            film.moveToPosition(i);
+            Log.d("filmadapter", "onLoadFinished: " + film.getString(film.getColumnIndex("name")));
+        }*/
+        film.moveToPosition(position);
+        Glide.with(context).load(Strings.IMGPREFIX + film.getString(film.getColumnIndex("imgcardboard"))).into(holder.image);
+        Log.d("filmadapter", "onBindViewHolder: " + position + " " + film.getString(film.getColumnIndex("_id")));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putLong("film_id", MainActivity.listFilms.get(position).getId());
-
-                AppCompatActivity activity = (AppCompatActivity) context;
-                Fragment myFragment = new FilmDetailes();
-                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.nav_host_fragment ,myFragment).addToBackStack(null);
-                myFragment.setArguments(args);
-                fragmentTransaction.commit();
+                Intent i = new Intent(context, FilmDetailes.class);
+                i.putExtra("film_id", film.getLong(0));
+                Log.d("filmadapter", "onClick: " + Long.valueOf(film.getString(film.getColumnIndex("_id"))));
+                context.startActivity(i);
             }
         });
-        Glide.with(context).load(Strings.IMGPREFIX + MainActivity.listFilms.get(position).getImgCardboard()).into(holder.image);
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                return true;
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return listFilms.size();
+        if (film == null) {
+            return 0;
+        } else return film.getCount();
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {
@@ -69,6 +78,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
+            Log.d("filmadapter", "MyHolder: " + film.getCount());
         }
     }
 }

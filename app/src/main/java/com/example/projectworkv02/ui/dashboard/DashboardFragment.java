@@ -41,7 +41,7 @@ public class DashboardFragment extends Fragment {
         listWatchFilms = view.findViewById(R.id.listWatchFilms);
         RecyclerView.LayoutManager lm = new GridLayoutManager(getActivity(), 2);
         listWatchFilms.setLayoutManager(lm);
-        adapter = new FilmsAdapter(getActivity(), MainActivity.listFilms);
+        adapter = new FilmsAdapter(getActivity(), null);
         listWatchFilms.setAdapter(adapter);
     }
 }
