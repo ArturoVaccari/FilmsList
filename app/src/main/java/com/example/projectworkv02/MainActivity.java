@@ -2,6 +2,7 @@ package com.example.projectworkv02;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.projectworkv02.database.Film;
 import com.example.projectworkv02.database.FilmDB;
@@ -25,7 +26,6 @@ import java.util.Currency;
 
 public class MainActivity extends AppCompatActivity {
 
-    private InternetCalls internetCalls = new InternetCalls();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        internetCalls.chiamataInternet(Strings.FILM, Strings.UPCOMING, Strings.ITALIAN, this);
+        askFilms();
+    }
+
+    public void askFilms() {
+        InternetCalls i = new InternetCalls();
+        i.chiamataInternet(Strings.FILM, Strings.UPCOMING, Strings.ITALIAN, FilmsApplication.page, getApplicationContext(), true);
     }
 }

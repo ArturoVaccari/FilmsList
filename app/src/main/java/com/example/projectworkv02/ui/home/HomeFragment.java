@@ -16,11 +16,15 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projectworkv02.EndlessScrollListener;
+import com.example.projectworkv02.FilmsApplication;
 import com.example.projectworkv02.MainActivity;
+import com.example.projectworkv02.Strings;
 import com.example.projectworkv02.adapters.FilmsAdapter;
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.database.Film;
 import com.example.projectworkv02.database.FilmProvider;
+import com.example.projectworkv02.internet.InternetCalls;
 
 import java.util.ArrayList;
 
@@ -28,7 +32,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private RecyclerView recyclerView;
     private FilmsAdapter filmsAdapter;
-    Cursor cursor;
+    private EndlessScrollListener scrollListener;
 
     public HomeFragment (){
     }
@@ -40,15 +44,24 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().getSupportLoaderManager().initLoader(1, null, this);
+
 
 
         recyclerView = view.findViewById(R.id.listAllFilms);
-        RecyclerView.LayoutManager lm = new GridLayoutManager(getActivity(), 2);
+        GridLayoutManager lm = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(lm);
+        getActivity().getSupportLoaderManager().initLoader(1, null, this);
 
+        scrollListener = new EndlessScrollListener(lm) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.d("ciao", "chiamata" + page);
+                InternetCalls i = new InternetCalls();
+                i.chiamataInternet(Strings.FILM, Strings.UPCOMING, Strings.ITALIAN, page, getActivity(), false);
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
     }
-
 
     @NonNull
     @Override
@@ -58,18 +71,13 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        cursor = data;
-        Log.d("homefragment", "onLoadFinished: " + data.getCount());
-        filmsAdapter = new FilmsAdapter(getActivity(), cursor);
+        Log.d("ciao", "onLoadFinished: " + data.getCount());
+        filmsAdapter = new FilmsAdapter(getActivity(), data);
         recyclerView.setAdapter(filmsAdapter);
-        for (int i = 0; i<data.getCount(); i++) {
-            cursor.moveToPosition(i);
-            Log.d("homefragment", "onLoadFinished: " + cursor.getString(cursor.getColumnIndex("name")));
-        }
+        filmsAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        cursor.close();
     }
 }

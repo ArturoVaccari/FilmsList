@@ -83,17 +83,10 @@ public class FilmProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         if (uriMatcher.match(uri) == ALL_FILMS) {
             SQLiteDatabase db = database.getWritableDatabase();
-            String selectString = "Select * from " + FilmTableHelper.TABLE_NAME + " where " + "_ID" + " =?";
-            Cursor cursor = db.rawQuery(selectString, new String[] {values.getAsString("_id")});
-            if(cursor.getCount() <= 0){
-                Log.d("contentprovider", "insert: " + values.getAsLong("_id"));
-                long result = db.insert(FilmTableHelper.TABLE_NAME, null, values);
-                String resultString = ContentResolver.SCHEME_CONTENT + "://" + BASE_PATH_FILMS + "/" + result;
-                getContext().getContentResolver().notifyChange(uri, null);
-                cursor.close();
-                return Uri.parse(resultString);
-            }
-            cursor.close();
+            long result = db.insert(FilmTableHelper.TABLE_NAME, null, values);
+            String resultString = ContentResolver.SCHEME_CONTENT + "://" + BASE_PATH_FILMS + "/" + result;
+            getContext().getContentResolver().notifyChange(uri, null);
+            return Uri.parse(resultString);
         }
         return null;
     }

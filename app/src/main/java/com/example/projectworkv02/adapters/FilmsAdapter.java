@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.Strings;
 
+import com.example.projectworkv02.database.FilmTableHelper;
 import com.example.projectworkv02.ui.filmDetailes.FilmDetailes;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
@@ -37,21 +38,25 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
-        /**for (int i = 0; i<film.getCount(); i++) {
-            film.moveToPosition(i);
-            Log.d("filmadapter", "onLoadFinished: " + film.getString(film.getColumnIndex("name")));
-        }*/
-        film.moveToPosition(position);
-        Glide.with(context).load(Strings.IMGPREFIX + film.getString(film.getColumnIndex("imgcardboard"))).into(holder.image);
-        Log.d("filmadapter", "onBindViewHolder: " + position + " " + film.getString(film.getColumnIndex("_id")));
+    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        if (!film.moveToPosition(position)) {
+            return;
+        }
+        final long id = film.getInt(film.getColumnIndex(FilmTableHelper._ID));
+        final String img = film.getString(film.getColumnIndex(FilmTableHelper.IMGCARDBOARD));
+
+        if (img.equals("null")) {
+            Glide.with(context).load(R.drawable.img_placeholder).into(holder.image);
+        } else {
+            Glide.with(context).load(Strings.IMGPREFIX + img).into(holder.image);
+
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, FilmDetailes.class);
-                i.putExtra("film_id", film.getLong(0));
-                Log.d("filmadapter", "onClick: " + Long.valueOf(film.getString(film.getColumnIndex("_id"))));
+                i.putExtra("film_id", id);
                 context.startActivity(i);
             }
         });
@@ -59,7 +64,6 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
                 return true;
             }
         });
@@ -78,7 +82,6 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
-            Log.d("filmadapter", "MyHolder: " + film.getCount());
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.projectworkv02.internet;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -11,7 +12,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.projectworkv02.FilmsApplication;
 import com.example.projectworkv02.MainActivity;
+import com.example.projectworkv02.Strings;
 import com.example.projectworkv02.database.Film;
 import com.example.projectworkv02.database.FilmDB;
 import com.example.projectworkv02.database.FilmProvider;
@@ -25,15 +28,12 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class InternetCalls {
 
-    private SQLiteDatabase db;
-
-    public void chiamataInternet (String tipo, String chiamata, String language, final Context context) {
-
-        db = new FilmDB(context).getWritableDatabase();
+    public void chiamataInternet (String tipo, String chiamata, String language, int page, final Context context, final boolean applicationStart) {
+        Log.d("ciao", "chiamataInternet" + page);
 
         RequestQueue queue = Volley.newRequestQueue(context);
         String url ="https://api.themoviedb.org/3/" + tipo + "/" + chiamata + "?api_key=649482baeb3f20188d5cabbd5d83f466" +
-                "&language=" + language;
+                "&language=" + language + "&page=" + page;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -44,17 +44,29 @@ public class InternetCalls {
                         try {
                             JSONObject object = new JSONObject(response);
                             JSONArray films = object.getJSONArray("results");
+
+                            int filmCounter = 0;
+
                             for(int i = 0; i<films.length(); i++) {
                                 JSONObject obj = films.getJSONObject(i);
 
-                                ContentValues contentValues = new ContentValues();
-                                contentValues.put(FilmTableHelper._ID, obj.getLong("id"));
-                                contentValues.put(FilmTableHelper.NAME, obj.getString("title"));
-                                contentValues.put(FilmTableHelper.DESCRIPTION, obj.getString("overview"));
-                                contentValues.put(FilmTableHelper.IMGCARDBOARD, obj.getString("poster_path"));
-                                contentValues.put(FilmTableHelper.IMGLARGE, obj.getString("backdrop_path"));
+                                long id = obj.getLong("id");
+                                Cursor c = context.getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper._ID + " = " + id, null, null);
+                                if (c.getCount() == 0) {
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put(FilmTableHelper._ID, id);
+                                    contentValues.put(FilmTableHelper.NAME, obj.getString("title"));
+                                    contentValues.put(FilmTableHelper.DESCRIPTION, obj.getString("overview"));
+                                    contentValues.put(FilmTableHelper.IMGCARDBOARD, obj.getString("poster_path"));
+                                    contentValues.put(FilmTableHelper.IMGLARGE, obj.getString("backdrop_path"));
 
-                                context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
+                                    filmCounter ++;
+                                    context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
+                                }
+                            }
+                            if (filmCounter < 10 && !applicationStart) {
+                                FilmsApplication.page ++;
+                                chiamataInternet(Strings.FILM, Strings.UPCOMING, Strings.ITALIAN, FilmsApplication.page, context, false);
                             }
 
                         } catch (JSONException e) {

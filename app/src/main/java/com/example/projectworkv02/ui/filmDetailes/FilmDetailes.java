@@ -27,7 +27,6 @@ public class FilmDetailes extends AppCompatActivity {
 
     private ImageView imageView;
     private TextView name, description;
-    private SQLiteDatabase database;
     private long filmId;
 
     @Override
@@ -40,13 +39,25 @@ public class FilmDetailes extends AppCompatActivity {
         description = findViewById(R.id.textDescription);
 
         filmId = getIntent().getLongExtra("film_id", 0);
-        Log.d("film", "onViewCreated: " + filmId);
 
         Cursor c = getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper._ID + " = " + filmId, null, null, null);
         c.moveToNext();
+        if (c.getString(c.getColumnIndex(FilmTableHelper.IMGLARGE)).equals("null")) {
+            Glide.with(this).load(R.drawable.img_placeholder).into(imageView);
+        } else {
+            Glide.with(this).load(Strings.IMGPREFIX + c.getString(c.getColumnIndex(FilmTableHelper.IMGLARGE))).into(imageView);
+        }
 
-        Glide.with(this).load(Strings.IMGPREFIX + c.getString(c.getColumnIndex(FilmTableHelper.IMGLARGE))).into(imageView);
-        name.setText(c.getString(c.getColumnIndex(FilmTableHelper.NAME)));
-        description.setText(c.getString(c.getColumnIndex(FilmTableHelper.DESCRIPTION)));
+        if (c.getString(c.getColumnIndex(FilmTableHelper.NAME)).equals("")) {
+            name.setText(getText(R.string.text_no_title).toString());
+        } else {
+            name.setText(c.getString(c.getColumnIndex(FilmTableHelper.NAME)));
+        }
+
+        if (c.getString(c.getColumnIndex(FilmTableHelper.DESCRIPTION)).equals("")) {
+            description.setText(getText(R.string.text_no_description).toString());
+        } else {
+            description.setText(c.getString(c.getColumnIndex(FilmTableHelper.DESCRIPTION)));
+        }
     }
 }
