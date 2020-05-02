@@ -3,7 +3,6 @@ package com.example.projectworkv02.internet;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -12,11 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.projectworkv02.FilmsApplication;
-import com.example.projectworkv02.MainActivity;
-import com.example.projectworkv02.Strings;
-import com.example.projectworkv02.database.Film;
-import com.example.projectworkv02.database.FilmDB;
+import com.example.projectworkv02.StaticValues;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
 
@@ -44,7 +39,8 @@ public class InternetCalls {
                         try {
                             JSONObject object = new JSONObject(response);
                             JSONArray films = object.getJSONArray("results");
-
+                            StaticValues.MAXPAGE = Integer.parseInt(object.getString("total_pages"));
+                            Log.d(TAG, "onResponse: " + StaticValues.MAXPAGE);
                             int filmCounter = 0;
 
                             for(int i = 0; i<films.length(); i++) {
@@ -59,14 +55,15 @@ public class InternetCalls {
                                     contentValues.put(FilmTableHelper.DESCRIPTION, obj.getString("overview"));
                                     contentValues.put(FilmTableHelper.IMGCARDBOARD, obj.getString("poster_path"));
                                     contentValues.put(FilmTableHelper.IMGLARGE, obj.getString("backdrop_path"));
+                                    contentValues.put(FilmTableHelper.WATCH, "false");
 
                                     filmCounter ++;
                                     context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
                                 }
                             }
-                            if (filmCounter < 10 && !applicationStart) {
-                                FilmsApplication.page ++;
-                                chiamataInternet(Strings.FILM, Strings.UPCOMING, Strings.ITALIAN, FilmsApplication.page, context, false);
+                            if (filmCounter < 10 && !applicationStart && StaticValues.page <= StaticValues.MAXPAGE) {
+                                StaticValues.page ++;
+                                chiamataInternet(StaticValues.FILM, StaticValues.UPCOMING, StaticValues.ITALIAN, StaticValues.page, context, false);
                             }
 
                         } catch (JSONException e) {

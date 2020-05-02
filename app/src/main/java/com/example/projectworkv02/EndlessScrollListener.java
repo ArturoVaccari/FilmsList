@@ -14,7 +14,7 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     // before loading more.
     private int visibleThreshold = 2;
     // The current offset index of data you have loaded
-
+    // the current page is saved in the StaticValues class
     // The total number of items in the dataset after the last load
     private int previousTotalItemCount = 0;
     // True if we are still waiting for the last set of data to load.
@@ -73,7 +73,7 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state
         if (totalItemCount < previousTotalItemCount) {
-            FilmsApplication.page = this.startingPageIndex;
+            StaticValues.page = this.startingPageIndex;
             this.previousTotalItemCount = totalItemCount;
             if (totalItemCount == 0) {
                 this.loading = true;
@@ -92,15 +92,15 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         // threshold should reflect how many total columns there are too
         if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
-            FilmsApplication.page ++;
-            onLoadMore(FilmsApplication.page, totalItemCount, view);
+            StaticValues.page ++;
+            onLoadMore(StaticValues.page, totalItemCount, view);
             loading = true;
         }
     }
 
     // Call this method whenever performing new searches
     public void resetState() {
-        FilmsApplication.page = this.startingPageIndex;
+        StaticValues.page = this.startingPageIndex;
         this.previousTotalItemCount = 0;
         this.loading = true;
     }

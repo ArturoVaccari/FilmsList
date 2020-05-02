@@ -1,28 +1,15 @@
 package com.example.projectworkv02;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.projectworkv02.database.Film;
-import com.example.projectworkv02.database.FilmDB;
-import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.internet.InternetCalls;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import java.util.ArrayList;
-import java.util.Currency;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void askFilms() {
         InternetCalls i = new InternetCalls();
-        i.chiamataInternet(Strings.FILM, Strings.UPCOMING, Strings.ITALIAN, FilmsApplication.page, getApplicationContext(), true);
+        i.chiamataInternet(StaticValues.FILM, StaticValues.UPCOMING, StaticValues.ITALIAN, StaticValues.page, getApplicationContext(), true);
     }
 }

@@ -7,15 +7,17 @@ public class Film {
     private String description;
     private String imgCardboard;
     private String imgLarge;
+    private String watch;
 
     public Film() {}
 
-    public Film(long id, String name, String description, String imgCardboard, String imgLarge) {
+    public Film(long id, String name, String description, String imgCardboard, String imgLarge, String watch) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.imgCardboard = imgCardboard;
         this.imgLarge = imgLarge;
+        this.watch = watch;
     }
 
     public long getId() {
@@ -56,5 +58,13 @@ public class Film {
 
     public void setImgLarge(String imgLarge) {
         this.imgLarge = imgLarge;
+    }
+
+    public String getWatch() {
+        return watch;
+    }
+
+    public void setWatch(String watch) {
+        this.watch = watch;
     }
 }
