@@ -17,6 +17,6 @@ public class FilmTableHelper implements BaseColumns {
             DESCRIPTION + " TEXT , " +
             IMGCARDBOARD + " TEXT , " +
             IMGLARGE + " TEXT , " +
-            WATCH +" TEXT ) ;";
+            WATCH +" INTEGER ) ;";
 }
 

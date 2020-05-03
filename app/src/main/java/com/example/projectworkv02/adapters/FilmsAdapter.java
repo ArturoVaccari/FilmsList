@@ -2,6 +2,7 @@ package com.example.projectworkv02.adapters;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +30,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
 
     private Context context;
     private Cursor film;
+    private LongItemClickListener longItemClickListener;
 
     public FilmsAdapter(Context context, Cursor film) {
         this.context = context;
@@ -70,22 +74,6 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
                 context.startActivity(i);
             }
         });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ContentValues values = new ContentValues();
-                values.put(FilmTableHelper.NAME, f.getName());
-                values.put(FilmTableHelper.DESCRIPTION, f.getDescription());
-                values.put(FilmTableHelper.IMGCARDBOARD, f.getImgCardboard());
-                values.put(FilmTableHelper.IMGLARGE, f.getImgLarge());
-                values.put(FilmTableHelper.WATCH, "true");
-
-                context.getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper._ID + " = " + f.getId(), null);
-                Toast.makeText(context, "Salvato nei film da guardare", Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
     }
 
     @Override
@@ -95,16 +83,33 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         } else return film.getCount();
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder {
+    public class MyHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
         ImageView image;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(longItemClickListener != null) {
+                longItemClickListener.onLongItemClick(v,getAdapterPosition());
+            }
+            return true;
         }
     }
 
     public void setCursor (Cursor cursor) {
         this.film = cursor;
+    }
+
+    public interface LongItemClickListener{
+        void onLongItemClick(View view, int position);
+    }
+
+    public void setLongItemClickListener(LongItemClickListener longItemClickListener) {
+        this.longItemClickListener = longItemClickListener;
     }
 }
