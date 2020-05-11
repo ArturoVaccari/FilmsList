@@ -57,13 +57,10 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         f.setWatch(film.getString(film.getColumnIndex(FilmTableHelper.WATCH)));
         f.setDescription(film.getString(film.getColumnIndex(FilmTableHelper.DESCRIPTION)));
 
-
-
         if (f.getImgCardboard().equals("null")) {
             Glide.with(context).load(R.drawable.img_placeholder).into(holder.image);
         } else {
             Glide.with(context).load(StaticValues.IMGPREFIX + f.getImgCardboard()).into(holder.image);
-
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

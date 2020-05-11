@@ -1,11 +1,23 @@
 package com.example.projectworkv02;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.projectworkv02.internet.InternetCalls;
+import com.example.projectworkv02.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -13,6 +25,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +34,12 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard)
-                .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        Toolbar actionBar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(actionBar);
+        Log.d("ciao", "onCreate: " + navView.getFocusedChild());
+
         NavigationUI.setupWithNavController(navView, navController);
 
         askFilms();
@@ -33,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void askFilms() {
         InternetCalls i = new InternetCalls();
-        i.chiamataInternet(StaticValues.FILM, StaticValues.UPCOMING, StaticValues.ITALIAN, StaticValues.page, getApplicationContext(), true);
+        i.chiamataInternet(StaticValues.FILM, StaticValues.POPULAR, StaticValues.ITALIAN, StaticValues.page, StaticValues.REGION_ITALIAN, getApplicationContext(), true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_toolbar, menu);
+       return true;
     }
 }

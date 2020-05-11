@@ -7,8 +7,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectworkv02.EndlessScrollListener;
+import com.example.projectworkv02.MainActivity;
 import com.example.projectworkv02.StaticValues;
 import com.example.projectworkv02.adapters.FilmsAdapter;
 import com.example.projectworkv02.R;
@@ -38,8 +42,19 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     private EndlessScrollListener scrollListener;
     private static final int LOADER_ID = 1;
     Cursor c;
+    private SearchView searchView;
+    private CursorLoader cursorLoader;
+    private int count = 0;
+    private Bundle bundle = new Bundle();
+    private MenuItem searchItem;
 
     public HomeFragment (){
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,7 +65,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        getActivity().setTitle(getString(R.string.title_home));
 
         recyclerView = view.findViewById(R.id.listAllFilms);
         GridLayoutManager manager;
@@ -67,7 +82,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.d("ciao", "chiamata" + page);
                 InternetCalls i = new InternetCalls();
-                i.chiamataInternet(StaticValues.FILM, StaticValues.UPCOMING, StaticValues.ITALIAN, page, getActivity(), false);
+                i.chiamataInternet(StaticValues.FILM, StaticValues.POPULAR, StaticValues.ITALIAN, page, StaticValues.REGION_ITALIAN, getActivity(), false);
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
@@ -76,26 +91,33 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return new CursorLoader(getActivity(), FilmProvider.FILMS_URI, null, null, null, null);
+        if (id == 1) {
+            cursorLoader = new CursorLoader(getActivity(), FilmProvider.FILMS_URI, null, null, null, null);
+        } else if (args != null){
+            String name = args.getString("filter");
+            cursorLoader = new CursorLoader(getActivity(), FilmProvider.FILMS_URI, null, FilmTableHelper.NAME + " LIKE '%" + name + "%' ", null, null);
+        }
+        return cursorLoader;
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         Log.d("ciao", "onLoadFinished: " + data.getCount());
+        c = data;
         if(recyclerView.getAdapter() == null){
-            filmsAdapter = new FilmsAdapter(getActivity(), data);
+            filmsAdapter = new FilmsAdapter(getActivity(), c);
             filmsAdapter.setLongItemClickListener(this);
             recyclerView.setAdapter(filmsAdapter);
         } else {
-            filmsAdapter.setCursor(data);
+            filmsAdapter.setCursor(c);
         }
         filmsAdapter.notifyDataSetChanged();
-
-        c = data;
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        c = null;
+        filmsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -110,5 +132,45 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         ConfirmDialog dialogFragment = new ConfirmDialog(c.getInt(c.getColumnIndex(FilmTableHelper._ID)), StaticValues.FRAGMENT_HOME);
         ft.addToBackStack(null);
         dialogFragment.show(ft, "dialog");
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        searchItem = menu.findItem(R.id.search_icon);
+
+        searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Toast like print
+                bundle.putString("filter", query);
+                getLoaderManager().restartLoader(2, bundle, HomeFragment.this);
+                if( ! searchView.isIconified()) {
+                    searchView.setIconified(true);
+                }
+                searchItem.collapseActionView();
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                bundle.putString("filter", s);
+                if (count == 0){
+                    getActivity().getSupportLoaderManager().initLoader(2,bundle, HomeFragment.this);
+                    count ++;
+                } else {
+                    getLoaderManager().restartLoader(2, bundle, HomeFragment.this);
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(1, null, HomeFragment.this);
+
     }
 }

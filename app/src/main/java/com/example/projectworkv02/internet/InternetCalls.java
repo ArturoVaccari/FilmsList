@@ -23,12 +23,12 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class InternetCalls {
 
-    public void chiamataInternet (String tipo, String chiamata, String language, int page, final Context context, final boolean applicationStart) {
+    public void chiamataInternet (String tipo, String chiamata, String language, int page, String region, final Context context, final boolean applicationStart) {
         Log.d("ciao", "chiamataInternet" + page);
 
         RequestQueue queue = Volley.newRequestQueue(context);
         String url ="https://api.themoviedb.org/3/" + tipo + "/" + chiamata + "?api_key=649482baeb3f20188d5cabbd5d83f466" +
-                "&language=" + language + "&page=" + page;
+                "&language=" + language + "&page=" + page + "&region=" + region;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -63,7 +63,7 @@ public class InternetCalls {
                             }
                             if (filmCounter < 10 && !applicationStart && StaticValues.page <= StaticValues.MAXPAGE) {
                                 StaticValues.page ++;
-                                chiamataInternet(StaticValues.FILM, StaticValues.UPCOMING, StaticValues.ITALIAN, StaticValues.page, context, false);
+                                chiamataInternet(StaticValues.FILM, StaticValues.UPCOMING, StaticValues.ITALIAN, StaticValues.page, StaticValues.REGION_ITALIAN, context, false);
                             }
 
                         } catch (JSONException e) {

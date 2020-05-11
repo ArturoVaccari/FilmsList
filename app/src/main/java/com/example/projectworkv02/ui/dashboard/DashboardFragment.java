@@ -2,10 +2,14 @@ package com.example.projectworkv02.ui.dashboard;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -40,16 +44,23 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getActivity().setTitle(getString(R.string.title_dashboard));
+        setHasOptionsMenu(true);
         listWatchFilms = view.findViewById(R.id.listWatchFilms);
-        RecyclerView.LayoutManager lm = new GridLayoutManager(getActivity(), 2);
-        listWatchFilms.setLayoutManager(lm);
+        GridLayoutManager manager;
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            manager = new GridLayoutManager(getActivity(),3);
+        }else{
+            manager = new GridLayoutManager(getActivity(),2);
+        }
+        listWatchFilms.setLayoutManager(manager);
         getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
@@ -90,5 +101,10 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
         ConfirmDialog dialogFragment = new ConfirmDialog(c.getInt(c.getColumnIndex(FilmTableHelper._ID)), StaticValues.FRAGMENT_WATCH);
         ft.addToBackStack(null);
         dialogFragment.show(ft, "dialog");
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
     }
 }

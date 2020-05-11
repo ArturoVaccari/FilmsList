@@ -4,8 +4,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +31,16 @@ public class FilmDetailes extends AppCompatActivity {
         imageView = findViewById(R.id.largeImage);
         name = findViewById(R.id.textName);
         description = findViewById(R.id.textDescription);
+
+        Toolbar toolbar = findViewById(R.id.detailsToolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setTitle(getText(R.string.detailes));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         filmId = getIntent().getLongExtra("film_id", 0);
         Log.d("ciao", "onCreate: " + filmId);
