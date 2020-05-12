@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,12 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
             Glide.with(context).load(StaticValues.IMGPREFIX + f.getImgCardboard()).into(holder.image);
         }
 
+        if (f.getName().equals("")) {
+            holder.title.setText(context.getText(R.string.text_no_title).toString());
+        } else {
+            holder.title.setText(f.getName());
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,10 +89,12 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
+        TextView title;
         ImageView image;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
+            title = itemView.findViewById(R.id.list_title);
             itemView.setOnLongClickListener(this);
         }
 
