@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.filmDetailes.FilmDetailes" />
+        <activity android:name=".SearchActivity" />
 
         <provider
             android:authorities="com.example.projectworkv02.database.ContentProvider"

@@ -32,10 +32,11 @@ import com.example.projectworkv02.adapters.FilmsAdapter;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
 import com.example.projectworkv02.fragments.ConfirmDialog;
+import com.example.projectworkv02.fragments.ConfirmDialogListener;
 
 import java.util.ArrayList;
 
-public class DashboardFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, FilmsAdapter.LongItemClickListener {
+public class DashboardFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ConfirmDialogListener {
 
     private RecyclerView listWatchFilms;
     private FilmsAdapter adapter;
@@ -52,7 +53,7 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(getString(R.string.title_dashboard));
-        setHasOptionsMenu(true);
+
         listWatchFilms = view.findViewById(R.id.listWatchFilms);
         GridLayoutManager manager;
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
@@ -74,8 +75,7 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         Log.d("ciao", "preferiti: " + data.getCount());
         if(listWatchFilms.getAdapter() == null){
-            adapter = new FilmsAdapter(getActivity(), data);
-            adapter.setLongItemClickListener(this);
+            adapter = new FilmsAdapter(getActivity(), data, this, getString(R.string.title_confirm_remove));
             listWatchFilms.setAdapter(adapter);
         } else {
             adapter.setCursor(data);
@@ -90,21 +90,15 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onLongItemClick(View view, int position) {
-        Log.d("dialog", "onLongItemClick: " + position);
-        c.moveToPosition(position);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ConfirmDialog dialogFragment = new ConfirmDialog(c.getInt(c.getColumnIndex(FilmTableHelper._ID)), StaticValues.FRAGMENT_WATCH);
-        ft.addToBackStack(null);
-        dialogFragment.show(ft, "dialog");
+    public void onPositivePressed(long id) {
+        ContentValues values = new ContentValues();
+        values.put(FilmTableHelper.WATCH, StaticValues.WATCH_FALSE);
+        getActivity().getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper._ID + " = " + id, null);
+        Toast.makeText(getActivity(), "Rimosso dai film da guardare", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        menu.clear();
+    public void onNegativePressed() {
+
     }
 }

@@ -55,7 +55,7 @@ public class InternetCalls {
                                     contentValues.put(FilmTableHelper.DESCRIPTION, obj.getString("overview"));
                                     contentValues.put(FilmTableHelper.IMGCARDBOARD, obj.getString("poster_path"));
                                     contentValues.put(FilmTableHelper.IMGLARGE, obj.getString("backdrop_path"));
-                                    contentValues.put(FilmTableHelper.WATCH, "false");
+                                    contentValues.put(FilmTableHelper.WATCH, StaticValues.WATCH_FALSE);
 
                                     filmCounter ++;
                                     context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);

@@ -1,7 +1,7 @@
 package com.example.projectworkv02.ui.home;
 
 import android.content.ContentValues;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
@@ -26,16 +25,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectworkv02.EndlessScrollListener;
-import com.example.projectworkv02.MainActivity;
 import com.example.projectworkv02.StaticValues;
 import com.example.projectworkv02.adapters.FilmsAdapter;
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
 import com.example.projectworkv02.fragments.ConfirmDialog;
+import com.example.projectworkv02.fragments.ConfirmDialogListener;
 import com.example.projectworkv02.internet.InternetCalls;
+import com.example.projectworkv02.SearchActivity;
 
-public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, FilmsAdapter.LongItemClickListener{
+public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ConfirmDialogListener {
 
     private RecyclerView recyclerView;
     private FilmsAdapter filmsAdapter;
@@ -45,7 +45,6 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     private SearchView searchView;
     private CursorLoader cursorLoader;
     private int count = 0;
-    private Bundle bundle = new Bundle();
     private MenuItem searchItem;
 
     public HomeFragment (){
@@ -105,8 +104,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         Log.d("ciao", "onLoadFinished: " + data.getCount());
         c = data;
         if(recyclerView.getAdapter() == null){
-            filmsAdapter = new FilmsAdapter(getActivity(), c);
-            filmsAdapter.setLongItemClickListener(this);
+            filmsAdapter = new FilmsAdapter(getActivity(), c, this, getString(R.string.title_confirm_add));
             recyclerView.setAdapter(filmsAdapter);
         } else {
             filmsAdapter.setCursor(c);
@@ -120,57 +118,25 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         filmsAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onLongItemClick(View view, int position) {
-        Log.d("dialog", "onLongItemClick: " + position);
-        c.moveToPosition(position);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ConfirmDialog dialogFragment = new ConfirmDialog(c.getInt(c.getColumnIndex(FilmTableHelper._ID)), StaticValues.FRAGMENT_HOME);
-        ft.addToBackStack(null);
-        dialogFragment.show(ft, "dialog");
-    }
 
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        searchItem = menu.findItem(R.id.search_icon);
-
-        searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Toast like print
-                bundle.putString("filter", query);
-                getLoaderManager().restartLoader(2, bundle, HomeFragment.this);
-                if( ! searchView.isIconified()) {
-                    searchView.setIconified(true);
-                }
-                searchItem.collapseActionView();
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String s) {
-                bundle.putString("filter", s);
-                if (count == 0){
-                    getActivity().getSupportLoaderManager().initLoader(2,bundle, HomeFragment.this);
-                    count ++;
-                } else {
-                    getLoaderManager().restartLoader(2, bundle, HomeFragment.this);
-                }
-                return false;
-            }
-        });
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         getLoaderManager().restartLoader(1, null, HomeFragment.this);
+
+    }
+
+    @Override
+    public void onPositivePressed(long id) {
+        ContentValues values = new ContentValues();
+        values.put(FilmTableHelper.WATCH, StaticValues.WATCH_TRUE);
+        getActivity().getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper._ID + " = " + id, null);
+        Toast.makeText(getActivity(), "Aggiunto ai film da guardare", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNegativePressed() {
 
     }
 }

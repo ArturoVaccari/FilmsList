@@ -7,11 +7,11 @@ public class Film {
     private String description;
     private String imgCardboard;
     private String imgLarge;
-    private String watch;
+    private int watch;
 
     public Film() {}
 
-    public Film(long id, String name, String description, String imgCardboard, String imgLarge, String watch) {
+    public Film(long id, String name, String description, String imgCardboard, String imgLarge, int watch) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -60,11 +60,11 @@ public class Film {
         this.imgLarge = imgLarge;
     }
 
-    public String getWatch() {
+    public int getWatch() {
         return watch;
     }
 
-    public void setWatch(String watch) {
+    public void setWatch(int watch) {
         this.watch = watch;
     }
 }
