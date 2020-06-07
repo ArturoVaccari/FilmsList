@@ -7,18 +7,14 @@ public class Film {
     private String description;
     private String imgCardboard;
     private String imgLarge;
+    private float vote;
+    private float personalVote;
+    private String releaseDate;
     private int watch;
+    private int watched;
+    private long film_id;
 
     public Film() {}
-
-    public Film(long id, String name, String description, String imgCardboard, String imgLarge, int watch) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.imgCardboard = imgCardboard;
-        this.imgLarge = imgLarge;
-        this.watch = watch;
-    }
 
     public long getId() {
         return id;
@@ -66,5 +62,45 @@ public class Film {
 
     public void setWatch(int watch) {
         this.watch = watch;
+    }
+
+    public long getFilm_id() {
+        return film_id;
+    }
+
+    public void setFilm_id(long film_id) {
+        this.film_id = film_id;
+    }
+
+    public int getWatched() {
+        return watched;
+    }
+
+    public void setWatched(int watched) {
+        this.watched = watched;
+    }
+
+    public float getVote() {
+        return vote;
+    }
+
+    public void setVote(float vote) {
+        this.vote = vote;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public float getPersonalVote() {
+        return personalVote;
+    }
+
+    public void setPersonalVote(float personalVote) {
+        this.personalVote = personalVote;
     }
 }

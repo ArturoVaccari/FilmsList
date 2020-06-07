@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">ProjectWorkv0.2</string>
+    <string name="app_name">I Tuoi Film</string>
     <string name="title_home">Discover</string>
     <string name="title_dashboard">Guarda</string>
+    <string name="title_watched">Visti</string>
     <string name="title_notifications">Notifications</string>
     <string name="text_no_title">Nessun titolo trovato</string>
     <string name="text_no_description">Nessuna descrizione trovata</string>
@@ -12,7 +13,12 @@
     <string name="search">Cerca film</string>
     <string name="detailes">Dettagli film</string>
     <string name="title_find_films">Trova films</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="watch">Aggiungi a \"guarda\"</string>
+    <string name="remove_watch">Rimuovi da \"guarda\"</string>
+    <string name="watched">Aggiungi a \"visti\"</string>
+    <string name="remove_watched">Rimuovi da \"visti\"</string>
+    <string name="title_releasedate">Data uscita</string>
+    <string name="title_vote">Voto:</string>
+    <string name="not_available">N/A</string>
+    <string name="title_desctiption">Trama</string>
 </resources>

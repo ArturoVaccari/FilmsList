@@ -1,4 +1,4 @@
-package com.example.projectworkv02;
+package com.example.projectworkv02.utility;
 
 public class StaticValues {
     public static final String CHIAMATA500 = "500";
@@ -15,4 +15,12 @@ public class StaticValues {
     public static final int FRAGMENT_WATCH = 1;
     public static final int WATCH_FALSE = 0;
     public static final int WATCH_TRUE = 1;
+    public static final int WATCHED_FALSE = 0;
+    public static final int WATCHED_TRUE = 1;
+    public static final int LOCAL_DETAILES = 0;
+    public static final int INTERNET_DETAILES = 1;
+    public static final int CURSOR_DISCOVER_ID = 1;
+    public static final int CURSOR_WATCH_ID = 2;
+    public static final int CURSOR_WATCHED_ID = 3;
+    public static final int CURSOR_SEARCH_ID = 4;
 }

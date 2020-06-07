@@ -2,7 +2,6 @@ package com.example.projectworkv02.internet;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -11,7 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.projectworkv02.StaticValues;
+import com.example.projectworkv02.utility.StaticValues;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
 
@@ -40,26 +39,25 @@ public class InternetCalls {
                             JSONObject object = new JSONObject(response);
                             JSONArray films = object.getJSONArray("results");
                             StaticValues.MAXPAGE = Integer.parseInt(object.getString("total_pages"));
-                            Log.d(TAG, "onResponse: " + StaticValues.MAXPAGE);
+                            Log.d("ciao", "onResponse: " + StaticValues.MAXPAGE);
                             int filmCounter = 0;
 
                             for(int i = 0; i<films.length(); i++) {
                                 JSONObject obj = films.getJSONObject(i);
 
                                 long id = obj.getLong("id");
-                                Cursor c = context.getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper._ID + " = " + id, null, null);
-                                if (c.getCount() == 0) {
-                                    ContentValues contentValues = new ContentValues();
-                                    contentValues.put(FilmTableHelper._ID, id);
-                                    contentValues.put(FilmTableHelper.NAME, obj.getString("title"));
-                                    contentValues.put(FilmTableHelper.DESCRIPTION, obj.getString("overview"));
-                                    contentValues.put(FilmTableHelper.IMGCARDBOARD, obj.getString("poster_path"));
-                                    contentValues.put(FilmTableHelper.IMGLARGE, obj.getString("backdrop_path"));
-                                    contentValues.put(FilmTableHelper.WATCH, StaticValues.WATCH_FALSE);
 
-                                    filmCounter ++;
-                                    context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
-                                }
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put(FilmTableHelper.FILM_ID, id);
+                                contentValues.put(FilmTableHelper.NAME, obj.getString("title"));
+                                contentValues.put(FilmTableHelper.DESCRIPTION, obj.getString("overview"));
+                                contentValues.put(FilmTableHelper.IMGCARDBOARD, obj.getString("poster_path"));
+                                contentValues.put(FilmTableHelper.IMGLARGE, obj.getString("backdrop_path"));
+                                contentValues.put(FilmTableHelper.API_VOTE, obj.getString("vote_average"));
+                                contentValues.put(FilmTableHelper.RELEASE_DATE, obj.getString("release_date"));
+                                filmCounter ++;
+                                context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
+
                             }
                             if (filmCounter < 10 && !applicationStart && StaticValues.page <= StaticValues.MAXPAGE) {
                                 StaticValues.page ++;

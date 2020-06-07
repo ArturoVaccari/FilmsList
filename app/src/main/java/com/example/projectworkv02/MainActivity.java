@@ -1,27 +1,19 @@
 package com.example.projectworkv02;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.projectworkv02.internet.InternetCalls;
-import com.example.projectworkv02.ui.home.HomeFragment;
+import com.example.projectworkv02.ui.searchFilms.SearchActivity;
+import com.example.projectworkv02.utility.StaticValues;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,10 +27,7 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         Toolbar actionBar = findViewById(R.id.toolbar);
-
         setSupportActionBar(actionBar);
-        Log.d("ciao", "onCreate: " + navView.getFocusedChild());
-
         NavigationUI.setupWithNavController(navView, navController);
 
         askFilms();

@@ -8,7 +8,12 @@
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/eye"
         android:title="@string/title_dashboard" />
+
+    <item
+        android:id="@+id/navigation_watched"
+        android:icon="@drawable/eye_checked"
+        android:title="@string/title_watched" />
 
 </menu>

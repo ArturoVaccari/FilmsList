@@ -7,9 +7,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_film"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_film"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.filmDetailes.FilmDetailes" />
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".ui.searchFilms.SearchActivity" />
 
         <provider
             android:authorities="com.example.projectworkv02.database.ContentProvider"

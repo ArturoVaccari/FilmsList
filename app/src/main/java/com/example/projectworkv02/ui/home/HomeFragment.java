@@ -1,13 +1,11 @@
 package com.example.projectworkv02.ui.home;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,35 +15,29 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.projectworkv02.EndlessScrollListener;
-import com.example.projectworkv02.StaticValues;
+import com.example.projectworkv02.utility.EndlessScrollListener;
+import com.example.projectworkv02.utility.StaticValues;
 import com.example.projectworkv02.adapters.FilmsAdapter;
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
-import com.example.projectworkv02.fragments.ConfirmDialog;
 import com.example.projectworkv02.fragments.ConfirmDialogListener;
 import com.example.projectworkv02.internet.InternetCalls;
-import com.example.projectworkv02.SearchActivity;
 
-public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ConfirmDialogListener {
+public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView recyclerView;
     private FilmsAdapter filmsAdapter;
     private EndlessScrollListener scrollListener;
-    private static final int LOADER_ID = 1;
     Cursor c;
-    private SearchView searchView;
     private CursorLoader cursorLoader;
     private int count = 0;
-    private MenuItem searchItem;
 
     public HomeFragment (){
     }
@@ -74,7 +66,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             manager = new GridLayoutManager(getActivity(),2);
         }
         recyclerView.setLayoutManager(manager);
-        getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        getActivity().getSupportLoaderManager().initLoader(StaticValues.CURSOR_DISCOVER_ID, null, this);
 
         scrollListener = new EndlessScrollListener(manager) {
             @Override
@@ -101,10 +93,9 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        Log.d("ciao", "onLoadFinished: " + data.getCount());
         c = data;
         if(recyclerView.getAdapter() == null){
-            filmsAdapter = new FilmsAdapter(getActivity(), c, this, getString(R.string.title_confirm_add));
+            filmsAdapter = new FilmsAdapter(getActivity(), c);
             recyclerView.setAdapter(filmsAdapter);
         } else {
             filmsAdapter.setCursor(c);
@@ -124,19 +115,6 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onResume() {
         super.onResume();
         getLoaderManager().restartLoader(1, null, HomeFragment.this);
-
-    }
-
-    @Override
-    public void onPositivePressed(long id) {
-        ContentValues values = new ContentValues();
-        values.put(FilmTableHelper.WATCH, StaticValues.WATCH_TRUE);
-        getActivity().getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper._ID + " = " + id, null);
-        Toast.makeText(getActivity(), "Aggiunto ai film da guardare", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onNegativePressed() {
 
     }
 }

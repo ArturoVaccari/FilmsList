@@ -1,52 +1,43 @@
-package com.example.projectworkv02.ui.dashboard;
+package com.example.projectworkv02.ui.watch;
 
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.projectworkv02.MainActivity;
 import com.example.projectworkv02.R;
-import com.example.projectworkv02.StaticValues;
+import com.example.projectworkv02.fragments.ConfirmDialog;
+import com.example.projectworkv02.utility.StaticValues;
 import com.example.projectworkv02.adapters.FilmsAdapter;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
-import com.example.projectworkv02.fragments.ConfirmDialog;
 import com.example.projectworkv02.fragments.ConfirmDialogListener;
 
-import java.util.ArrayList;
-
-public class DashboardFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ConfirmDialogListener {
+public class WatchFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, FilmsAdapter.LongItemClickListener, ConfirmDialogListener{
 
     private RecyclerView listWatchFilms;
     private FilmsAdapter adapter;
-    private static final int LOADER_ID = 2;
-    Cursor c;
+    private Cursor c;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        return inflater.inflate(R.layout.fragment_watch, container, false);
     }
 
     @Override
@@ -62,7 +53,7 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
             manager = new GridLayoutManager(getActivity(),2);
         }
         listWatchFilms.setLayoutManager(manager);
-        getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        getActivity().getSupportLoaderManager().initLoader(StaticValues.CURSOR_WATCH_ID, null, this);
     }
 
     @NonNull
@@ -73,16 +64,22 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        Log.d("ciao", "preferiti: " + data.getCount());
+        Log.d("watch", "data: " + data + ", listWatchFilms.getAdapter(): " + listWatchFilms.getAdapter());
+        Log.d("watch", "cursor c: " + c + ", adapter: " + adapter);
+        c=data;
+
         if(listWatchFilms.getAdapter() == null){
-            adapter = new FilmsAdapter(getActivity(), data, this, getString(R.string.title_confirm_remove));
+            adapter = new FilmsAdapter(getActivity(), c);
             listWatchFilms.setAdapter(adapter);
+            adapter.setLongItemClickListener(this);
+            Log.d("watch", "getAdapter = null ");
         } else {
-            adapter.setCursor(data);
+            Log.d("watch", "getAdapter != null ");
+            adapter.setCursor(c);
         }
         adapter.notifyDataSetChanged();
 
-        c = data;
+
     }
 
     @Override
@@ -90,10 +87,19 @@ public class DashboardFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onPositivePressed(long id) {
+    public void onLongItemClick(View view, int position) {
+        c.moveToPosition(position);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        ConfirmDialog dialogFragment = new ConfirmDialog(c.getLong(c.getColumnIndex(FilmTableHelper.FILM_ID)), R.string.remove_watch, this);
+
+        dialogFragment.show(fragmentManager, null);
+    }
+
+    @Override
+    public void onPositivePressed(long film_id, int title_resource) {
         ContentValues values = new ContentValues();
         values.put(FilmTableHelper.WATCH, StaticValues.WATCH_FALSE);
-        getActivity().getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper._ID + " = " + id, null);
+        getActivity().getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper.FILM_ID + " = " + film_id, null);
         Toast.makeText(getActivity(), "Rimosso dai film da guardare", Toast.LENGTH_LONG).show();
     }
 

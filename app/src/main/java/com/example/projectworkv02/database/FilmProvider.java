@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -83,10 +82,15 @@ public class FilmProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         if (uriMatcher.match(uri) == ALL_FILMS) {
             SQLiteDatabase db = database.getWritableDatabase();
-            long result = db.insert(FilmTableHelper.TABLE_NAME, null, values);
-            String resultString = ContentResolver.SCHEME_CONTENT + "://" + BASE_PATH_FILMS + "/" + result;
-            getContext().getContentResolver().notifyChange(uri, null);
-            return Uri.parse(resultString);
+            int filmId = (values.getAsInteger(FilmTableHelper.FILM_ID));
+            Cursor c = db.query(FilmTableHelper.TABLE_NAME, null, FilmTableHelper.FILM_ID + " = " + filmId, null, null, null, null);
+            if (c.getCount() == 0) {
+                long result = db.insert(FilmTableHelper.TABLE_NAME, null, values);
+                String resultString = ContentResolver.SCHEME_CONTENT + "://" + BASE_PATH_FILMS + "/" + result;
+                getContext().getContentResolver().notifyChange(uri, null);
+                return Uri.parse(resultString);
+            } else {
+                update(FilmProvider.FILMS_URI, values, FilmTableHelper.FILM_ID + " = " + filmId, null);            }
         }
         return null;
     }

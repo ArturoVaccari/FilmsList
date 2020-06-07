@@ -1,4 +1,4 @@
-package com.example.projectworkv02;
+package com.example.projectworkv02.utility;
 
 import android.util.Log;
 
@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.example.projectworkv02.utility.StaticValues;
 
 public abstract class EndlessScrollListener extends RecyclerView.OnScrollListener {
     // The minimum amount of items to have below your current scroll position

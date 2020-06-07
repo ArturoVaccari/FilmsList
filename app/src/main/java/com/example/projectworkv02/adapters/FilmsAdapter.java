@@ -1,47 +1,36 @@
 package com.example.projectworkv02.adapters;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import com.example.projectworkv02.R;
-import com.example.projectworkv02.StaticValues;
+import com.example.projectworkv02.utility.StaticValues;
 
 import com.example.projectworkv02.database.Film;
-import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
-import com.example.projectworkv02.fragments.ConfirmDialog;
-import com.example.projectworkv02.fragments.ConfirmDialogListener;
 import com.example.projectworkv02.ui.filmDetailes.FilmDetailes;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
 
     private Context context;
     private Cursor film;
-    private ConfirmDialogListener listener;
-    private String dialogMessage;
+    private LongItemClickListener longItemClickListener;
 
-    public FilmsAdapter(Context context, Cursor film, ConfirmDialogListener listener, String dialogMessage) {
+    public FilmsAdapter(Context context, Cursor film) {
         this.context = context;
         this.film = film;
-        this.listener = listener;
-        this.dialogMessage = dialogMessage;
     }
 
     @NonNull
@@ -57,43 +46,46 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
             return;
         }
         final Film f = new Film();
-        f.setId(film.getInt(film.getColumnIndex(FilmTableHelper._ID)));
+        f.setFilm_id(film.getInt(film.getColumnIndex(FilmTableHelper.FILM_ID)));
         f.setName(film.getString(film.getColumnIndex(FilmTableHelper.NAME)));
         f.setImgLarge(film.getString(film.getColumnIndex(FilmTableHelper.IMGLARGE)));
         f.setImgCardboard(film.getString(film.getColumnIndex(FilmTableHelper.IMGCARDBOARD)));
         f.setWatch(film.getInt(film.getColumnIndex(FilmTableHelper.WATCH)));
         f.setDescription(film.getString(film.getColumnIndex(FilmTableHelper.DESCRIPTION)));
+        f.setVote(film.getFloat(film.getColumnIndex(FilmTableHelper.API_VOTE)));
+        f.setPersonalVote(film.getFloat(film.getColumnIndex(FilmTableHelper.PERSONAL_VOTE)));
 
-        if (f.getImgCardboard().equals("null")) {
+        Log.d("filmetto", "onBindViewHolder: " + film.getInt(film.getColumnIndex(FilmTableHelper._ID)));
+        Log.d("filmetto", "onBindViewHolder: " + f.getFilm_id());
+        Log.d("filmetto", "onBindViewHolder: " + f.getName());
+        Log.d("filmetto", "onBindViewHolder: " + f.getImgCardboard());
+        if (f.getImgCardboard() == null || f.getImgCardboard().equals("null") ) {
             Glide.with(context).load(R.drawable.img_placeholder).into(holder.image);
         } else {
             Glide.with(context).load(StaticValues.IMGPREFIX + f.getImgCardboard()).into(holder.image);
         }
 
-        if (f.getName().equals("")) {
+        if (f.getName() == null || f.getName().equals("")) {
             holder.title.setText(context.getText(R.string.text_no_title).toString());
         } else {
             holder.title.setText(f.getName());
+        }
+
+        if (f.getPersonalVote() == 0 && f.getVote() == 0) {
+            holder.vote.setText(context.getText(R.string.not_available).toString());
+        } else if (f.getPersonalVote() == 0 && f.getVote() != 0) {
+            holder.vote.setText(f.getVote() + "");
+        } else {
+            holder.vote.setText(f.getPersonalVote() + "");
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, FilmDetailes.class);
-                i.putExtra("film_id", f.getId());
+                i.putExtra("calling", StaticValues.LOCAL_DETAILES);
+                i.putExtra("film_id", f.getFilm_id());
                 context.startActivity(i);
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AppCompatActivity activity = (AppCompatActivity) context;
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                ConfirmDialog dialogFragment = new ConfirmDialog(f.getId(), dialogMessage, listener);
-
-                dialogFragment.show(fragmentManager, null);
-                return true;
             }
         });
     }
@@ -105,18 +97,37 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         } else return film.getCount();
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder {
+    public class MyHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
         TextView title;
+        TextView vote;
         ImageView image;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             title = itemView.findViewById(R.id.list_title);
+            vote = itemView.findViewById(R.id.vote);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(longItemClickListener != null) {
+                longItemClickListener.onLongItemClick(v,getAdapterPosition());
+            }
+            return true;
         }
     }
 
     public void setCursor (Cursor cursor) {
         this.film = cursor;
+    }
+
+    public interface LongItemClickListener{
+        void onLongItemClick(View view, int position);
+    }
+
+    public void setLongItemClickListener(LongItemClickListener longItemClickListener) {
+        this.longItemClickListener = longItemClickListener;
     }
 }
