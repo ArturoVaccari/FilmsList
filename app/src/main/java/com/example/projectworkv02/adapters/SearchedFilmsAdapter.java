@@ -29,6 +29,7 @@ public class SearchedFilmsAdapter extends RecyclerView.Adapter<SearchedFilmsAdap
     private Context context;
     private ArrayList<Film> films;
 
+    //costruttore che prende contesto e dati dall'activity
     public SearchedFilmsAdapter(Context context, ArrayList<Film> films) {
         this.context = context;
         this.films = films;
@@ -45,18 +46,16 @@ public class SearchedFilmsAdapter extends RecyclerView.Adapter<SearchedFilmsAdap
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         final Film film = films.get(position);
         final long id = film.getFilm_id();
+
+        // controllo che il contenuto della colonna con il link dell'immagine non sia nulla
         if (film.getImgCardboard() == null || film.getImgCardboard().equals("null")) {
             Glide.with(context).load(R.drawable.img_placeholder).into(holder.image);
         } else {
             Glide.with(context).load(StaticValues.IMGPREFIX + film.getImgCardboard()).into(holder.image);
         }
 
-        if (film.getName() == null || film.getName().equals("")) {
-            holder.title.setText(context.getText(R.string.text_no_title).toString());
-        } else {
-            holder.title.setText(film.getName());
-        }
-
+        // controllo se il le colonne coi voti sono vuote, poi se il voto dell'utente è 0. Il voto dell'utente ha la priorità
+        // in caso ci siano entrambi.
         if (film.getPersonalVote() == 0 && film.getVote() == 0) {
             holder.vote.setText(context.getText(R.string.not_available).toString());
         } else if (film.getPersonalVote() == 0 && film.getVote() != 0) {
@@ -65,6 +64,7 @@ public class SearchedFilmsAdapter extends RecyclerView.Adapter<SearchedFilmsAdap
             holder.vote.setText(film.getPersonalVote() + "");
         }
 
+        // al click lancia l'activity FilmDetailes e le fornisce i dati necessari ad eventualmente salvare il film nel database locale
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,13 +93,11 @@ public class SearchedFilmsAdapter extends RecyclerView.Adapter<SearchedFilmsAdap
 
     public class MyHolder extends RecyclerView.ViewHolder{
 
-        TextView title;
         ImageView image;
         TextView vote;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
-            title = itemView.findViewById(R.id.list_title);
             vote = itemView.findViewById(R.id.vote);
         }
     }

@@ -29,11 +29,11 @@ import com.example.projectworkv02.fragments.ConfirmDialog;
 import com.example.projectworkv02.fragments.ConfirmDialogListener;
 import com.example.projectworkv02.utility.StaticValues;
 
-
+// il fragment filtra i film filtrandoli dove watched == 1(true)
 public class Watched_films extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, FilmsAdapter.LongItemClickListener, ConfirmDialogListener {
 
     private RecyclerView listWatchedFilms;
-    private FilmsAdapter adapter = null;
+    private FilmsAdapter adapter;
     private Cursor c;
 
     @Override
@@ -50,6 +50,7 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
 
         listWatchedFilms = getActivity().findViewById(R.id.list_watched);
         GridLayoutManager manager;
+        // controllo sull'orientamento del telefono per decidere se mostrare due o tre film sulla stessa riga
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             manager = new GridLayoutManager(getActivity(),3);
         }else{
@@ -67,7 +68,10 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        //riempie il cursore con i dati presi dal db filtrando i film che hanno watched == 1(true)
         c=data;
+        Log.d("watched", "get loader " + listWatchedFilms.getAdapter());
+        Log.d("watched", "adapter " + adapter);
         if (listWatchedFilms.getAdapter() == null) {
             adapter = new FilmsAdapter(getActivity(), c);
             listWatchedFilms.setAdapter(adapter);
@@ -82,6 +86,7 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
     }
 
+    // al long click su un film mostra un popup per chiedere conferma della rimozione dalla lista
     @Override
     public void onLongItemClick(View view, int position) {
         c.moveToPosition(position);
@@ -91,8 +96,9 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
         dialogFragment.show(fragmentManager, null);
     }
 
+    // con risposta positiva dal popup cambia lo stato di watch da true a false
     @Override
-    public void onPositivePressed(long film_id, int title_resource) {
+    public void onPositivePressed(long film_id) {
         ContentValues values = new ContentValues();
         values.put(FilmTableHelper.WATCHED, StaticValues.WATCHED_FALSE);
         getActivity().getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper.FILM_ID + " = " + film_id, null);
@@ -101,6 +107,5 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onNegativePressed() {
-
     }
 }

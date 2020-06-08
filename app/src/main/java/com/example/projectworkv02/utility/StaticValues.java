@@ -1,5 +1,6 @@
 package com.example.projectworkv02.utility;
 
+// classe contenente dati statici usati nell'applicazione
 public class StaticValues {
     public static final String CHIAMATA500 = "500";
     public static final String FILM = "movie";

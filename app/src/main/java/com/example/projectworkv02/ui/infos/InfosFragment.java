@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.projectworkv02.R;
 
+// fragment contenente le informazioni dello sviluppatore, le istruzioni e i link per le icone usate nell'app
 public class InfosFragment extends Fragment {
 
     public InfosFragment() {
@@ -111,6 +112,7 @@ public class InfosFragment extends Fragment {
         });
     }
 
+    // metodo per aprire una pagina internet con il link richiesti dagli autori delle icone
     public void openWebPage(String url) {
         Uri webpage = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);

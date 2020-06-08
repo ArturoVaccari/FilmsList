@@ -30,14 +30,13 @@ import com.example.projectworkv02.database.FilmTableHelper;
 import com.example.projectworkv02.fragments.ConfirmDialogListener;
 import com.example.projectworkv02.internet.InternetCalls;
 
+// il fragment mostra tutti i film scaricati che non siano tra quelli da vedere o quelli visti
 public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView recyclerView;
     private FilmsAdapter filmsAdapter;
     private EndlessScrollListener scrollListener;
     Cursor c;
-    private CursorLoader cursorLoader;
-    private int count = 0;
 
     public HomeFragment (){
     }
@@ -55,11 +54,12 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        // imposta il titolo nella toolbar della main_activity per farlo corrispondere al fragment
         getActivity().setTitle(getString(R.string.title_home));
 
         recyclerView = view.findViewById(R.id.listAllFilms);
         GridLayoutManager manager;
+        // controllo sull'orientamento del telefono per decidere se mostrare due o tre film sulla stessa riga
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             manager = new GridLayoutManager(getActivity(),3);
         }else{
@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         recyclerView.setLayoutManager(manager);
         getActivity().getSupportLoaderManager().initLoader(StaticValues.CURSOR_DISCOVER_ID, null, this);
 
+        // metodo che permette di scaricare altri 20 film quando l'utente si avvicina alla fine della lista
         scrollListener = new EndlessScrollListener(manager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -81,11 +82,12 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-          return cursorLoader = new CursorLoader(getActivity(), FilmProvider.FILMS_URI, null, FilmTableHelper.WATCH + " IS NOT " + StaticValues.WATCH_TRUE + " AND " + FilmTableHelper.WATCHED + " IS NOT " + StaticValues.WATCHED_TRUE, null, null);
+        return new CursorLoader(getActivity(), FilmProvider.FILMS_URI, null, FilmTableHelper.WATCH + " IS NOT " + StaticValues.WATCH_TRUE + " AND " + FilmTableHelper.WATCHED + " IS NOT " + StaticValues.WATCHED_TRUE, null, null);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        //riempie il cursore con i dati presi dal db filtrando fuori i film che si trovano nella lista di film da vedere o visti
         c = data;
         if(recyclerView.getAdapter() == null){
             filmsAdapter = new FilmsAdapter(getActivity(), c);
@@ -98,16 +100,11 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        c = null;
-        filmsAdapter.notifyDataSetChanged();
     }
-
-
 
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(1, null, HomeFragment.this);
-
+        getLoaderManager().restartLoader(StaticValues.CURSOR_DISCOVER_ID, null, HomeFragment.this);
     }
 }

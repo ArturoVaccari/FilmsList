@@ -33,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
         askFilms();
     }
 
+    // metodo che richiama la classe usata per fare una chiamata ad internet all'avvio dell'app
     public void askFilms() {
         InternetCalls i = new InternetCalls();
         i.chiamataInternet(StaticValues.FILM, StaticValues.POPULAR, StaticValues.ITALIAN, StaticValues.page, StaticValues.REGION_ITALIAN, getApplicationContext(), true);
     }
 
+    // creazione di un custom actionbar con un pulsante che avvia l'activity per la ricerca di film per titolo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_toolbar, menu);

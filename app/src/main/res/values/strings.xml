@@ -4,11 +4,8 @@
     <string name="title_dashboard">Guarda</string>
     <string name="title_watched">Visti</string>
     <string name="title_infos">Infos</string>
-    <string name="title_notifications">Notifications</string>
     <string name="text_no_title">Nessun titolo trovato</string>
     <string name="text_no_description">Nessuna descrizione trovata</string>
-    <string name="title_confirm_add">Aggiungere alla lista da guardare?</string>
-    <string name="title_confirm_remove">Rimuovere dalla lista da guardare?</string>
     <string name="cancel">Annulla</string>
     <string name="confirm">Conferma</string>
     <string name="search">Cerca film</string>
@@ -24,7 +21,7 @@
     <string name="title_desctiption">Trama</string>
     <string name="value0_0">0.0</string>
     <string name="value10_0">10.0</string>
-    <string name="content_infos">App sviluppata da Arturo Vaccari, per maggiori informazioni scriverere a:</string>
+    <string name="content_infos">App sviluppata da Arturo Vaccari, per maggiori informazioni scrivere a:</string>
     <string name="mail_reference">vaccarturo@gmail.com</string>
     <string name="icon_made_by">Icon made by</string>
     <string name="eye_checked_icon">Eye Checked icon</string>
@@ -41,10 +38,9 @@
     <string name="title_instrucions">Istruzioni</string>
     <string name="title_attributions">Attribuzioni</string>
     <string name="title_producer">Sviluppatore</string>
-    <string name="instructions">All\'avvio l\'app mostra una lista di film popolari.
-                                In ciascuna delle quattro schermate principali è possibile fare la ricerca di un film per titolo.
-                                E\' possibile salvare i film in una lista di film da vedere, o già visti, premendo sull\'immagine di copertina
-                                che apre i dettagli del film, e in seguito premendo sui tre puntini.
-                                Per rimuovere un film da una lista, seguire il procedimento appena illustrato, o tenere premuto a
-                                lungo su il film che si trova nella lista sbagliata.</string>
+    <string name="instructions">All\'avvio l\'app mostra una lista di film popolari.\nIn ciascuna delle quattro schermate principali è
+                                possibile fare la ricerca di un film per titolo.\nE\' possibile salvare i film in una lista di film da
+                                vedere, o già visti, premendo sull\'immagine di copertina che apre i dettagli, e in seguito premendo
+                                sui tre puntini in alto a destra.\nPer rimuovere un film da una lista, seguire il procedimento appena
+                                illustrato, o tenere premuto a lungo su il film che si trova nella lista sbagliata.</string>
 </resources>

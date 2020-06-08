@@ -22,8 +22,8 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class InternetCalls {
 
+    // metodo per fare una chiamata ad internet e richiede tutte le parti di stringa per completare l'url
     public void chiamataInternet (String tipo, String chiamata, String language, int page, String region, final Context context, final boolean applicationStart) {
-
         RequestQueue queue = Volley.newRequestQueue(context);
         String url ="https://api.themoviedb.org/3/" + tipo + "/" + chiamata + "?api_key=649482baeb3f20188d5cabbd5d83f466" +
                 "&language=" + language + "&page=" + page + "&region=" + region;
@@ -41,6 +41,7 @@ public class InternetCalls {
                             Log.d("ciao", "onResponse: " + StaticValues.MAXPAGE);
                             int filmCounter = 0;
 
+                            // salva un film alla volta nel db
                             for(int i = 0; i<films.length(); i++) {
                                 JSONObject obj = films.getJSONObject(i);
 

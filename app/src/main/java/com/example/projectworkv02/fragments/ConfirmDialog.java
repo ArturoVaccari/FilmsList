@@ -14,7 +14,7 @@ import com.example.projectworkv02.R;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
 
-
+//fragment che crea un dialog per chiedere conferma o annulla di operazioni
 public class ConfirmDialog extends DialogFragment {
 
     private long id;
@@ -34,14 +34,13 @@ public class ConfirmDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final Cursor c = getActivity().getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper.FILM_ID + " = " + id, null, null, null);
-        c.moveToNext();
+        // costruzione di un alert dialog che in caso di risposta positiva restituisce l'id del film.
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle(getString(message) + "?");
         dialog.setPositiveButton(getText(R.string.confirm).toString(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listener.onPositivePressed(id, message);
+                listener.onPositivePressed(id);
             }
         });
         dialog.setNegativeButton(getText(R.string.cancel).toString(), new DialogInterface.OnClickListener() {

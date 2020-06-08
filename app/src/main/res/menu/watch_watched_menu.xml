@@ -3,25 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/watch_icon"
-        android:icon="@drawable/eye"
         android:title="@string/watch"
         app:showAsAction="never"
         android:orderInCategory="0"/>
 
     <item android:id="@+id/watched_icon"
-        android:icon="@drawable/eye_checked"
         android:title="@string/watched"
         app:showAsAction="never"
         android:orderInCategory="1"/>
 
     <item android:id="@+id/watch_false_icon"
-        android:icon="@drawable/remove_watch"
         android:title="@string/remove_watch"
         app:showAsAction="never"
         android:orderInCategory="0"/>
 
     <item android:id="@+id/watched_false_icon"
-        android:icon="@drawable/slash"
         android:title="@string/remove_watched"
         app:showAsAction="never"
         android:orderInCategory="1"/>

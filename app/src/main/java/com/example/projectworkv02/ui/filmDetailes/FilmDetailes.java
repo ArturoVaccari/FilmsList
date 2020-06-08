@@ -57,6 +57,7 @@ public class FilmDetailes extends AppCompatActivity{
         voteView = findViewById(R.id.textVote);
         voteBar = findViewById(R.id.sliderVote);
 
+        // custom toolbar con titolo e freccia per chiude l'activity
         Toolbar toolbar = findViewById(R.id.detailsToolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -64,6 +65,7 @@ public class FilmDetailes extends AppCompatActivity{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // controllo per sapere da cosa è stata chiamata l'activity
                 if (calling == StaticValues.LOCAL_DETAILES){
                     updateVote();
                 } else {
@@ -73,10 +75,10 @@ public class FilmDetailes extends AppCompatActivity{
         });
 
         calling = getIntent().getIntExtra("calling", 0);
+        filmId = getIntent().getLongExtra("film_id", 0);
 
+        // metodo che ottiene i dati da mostrare in base a cosa ha chiamato quest'activity
         if (calling == StaticValues.LOCAL_DETAILES) {
-
-            filmId = getIntent().getLongExtra("film_id", 0);
 
             c = getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper.FILM_ID + " = " + filmId, null, null, null);
             c.moveToNext();
@@ -91,7 +93,6 @@ public class FilmDetailes extends AppCompatActivity{
 
         } else if (calling == StaticValues.INTERNET_DETAILES) {
 
-            filmId = getIntent().getLongExtra("film_id", 0);
             try {
                 c = getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper.FILM_ID + " = " + filmId, null, null, null);
             } catch (Exception e){
@@ -120,30 +121,35 @@ public class FilmDetailes extends AppCompatActivity{
             }
         }
 
+        // controllo se il link dell'immagine da mostrare è nullo o vuoto ed in caso carica l'immagine
         if (imgUrl == null || imgUrl.equals("null")) {
             Glide.with(this).load(R.drawable.img_placeholder).into(imageView);
         } else {
             Glide.with(this).load(StaticValues.IMGPREFIX + imgUrl).into(imageView);
         }
 
+        // controllo se il titolo del film da mostrare è nullo o vuoto ed in caso lo scrive
         if (title == null || title.equals("")) {
             name.setText(getText(R.string.text_no_title).toString());
         } else {
             name.setText(title);
         }
 
+        // controllo se la trama del film da mostrare è nullo o vuoto ed in caso lo scrive
         if (description == null || descriptionFilm.equals("")) {
             description.setText(getText(R.string.text_no_description).toString());
         } else {
             description.setText(descriptionFilm);
         }
 
+        // controllo se il release_date del film da mostrare è nullo o vuoto ed in caso lo scrive
         if (releaseDate == null || releaseDate.equals("")) {
             releaseDateView.setText(getText(R.string.text_no_description).toString());
         } else {
             releaseDateView.setText(releaseDate);
         }
 
+        // controllo se il voto del film da mostrare è nullo o vuoto ed in caso lo scrive quello dell'utente
         if (personalVote == 0 && vote == 0) {
             voteView.setText(getText(R.string.not_available).toString());
         } else if (personalVote == 0 && vote != 0) {
@@ -156,6 +162,7 @@ public class FilmDetailes extends AppCompatActivity{
             voteBar.setProgress(personalVoteTimesTen);
         }
 
+        // metodo per mostrare il voto del film e mostrare in maniera dinamila il valore che cambia al muoversi dello slider
         voteBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -177,6 +184,7 @@ public class FilmDetailes extends AppCompatActivity{
         });
     }
 
+    // metodo per aggiornare il voto del film nel momento in cui l'utente vuole lasciare l'activity
     private void updateVote() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FilmTableHelper.PERSONAL_VOTE, personalVote);
@@ -184,6 +192,7 @@ public class FilmDetailes extends AppCompatActivity{
         finish();
     }
 
+    // metodo che controlla il valore delle variabili "isWatch" e "isWatched" e mostra le opzioni corrette per il caso
     private void controlWatchWatched(){
         if (isWatch == StaticValues.WATCH_FALSE){
             watch.setVisible(true);
@@ -206,6 +215,7 @@ public class FilmDetailes extends AppCompatActivity{
         }
     }
 
+    // metodo per salvare i dati di un film quando il film mostrato non è già presente nel db
     private void saveFilm(){
         ContentValues contentValues = new ContentValues();
         contentValues.put(FilmTableHelper.FILM_ID, filmId);
@@ -222,6 +232,7 @@ public class FilmDetailes extends AppCompatActivity{
         getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
     }
 
+    // menu nella toolbar contenente le 4 opzioni per aggiungere/rimuovere i film dalla lista di watch e/o watched
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.watch_watched_menu, menu);
@@ -232,20 +243,22 @@ public class FilmDetailes extends AppCompatActivity{
         return true;
     }
 
+    // al click degli item del menu aggiorna i dati del film o lo salva nel db
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         controlWatchWatched();
-
 
         watch.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Toast.makeText(FilmDetailes.this, "Aggiunto ai film da guardare", Toast.LENGTH_LONG).show();
                 isWatch = StaticValues.WATCH_TRUE;
+                isWatched = StaticValues.WATCHED_FALSE;
                 if (calling == StaticValues.LOCAL_DETAILES) {
                     ContentValues values = new ContentValues();
                     values.put(FilmTableHelper.WATCH, isWatch);
+                    values.put(FilmTableHelper.WATCHED, isWatched);
                     getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper.FILM_ID + " = " + filmId, null);
                 } else if (calling == StaticValues.INTERNET_DETAILES) {
                     saveFilm();
@@ -260,9 +273,11 @@ public class FilmDetailes extends AppCompatActivity{
             public boolean onMenuItemClick(MenuItem item) {
                 Toast.makeText(FilmDetailes.this, "Aggiunto ai film visti", Toast.LENGTH_LONG).show();
                 isWatched = StaticValues.WATCHED_TRUE;
+                isWatch = StaticValues.WATCH_FALSE;
                 if (calling == StaticValues.LOCAL_DETAILES) {
                     ContentValues values = new ContentValues();
                     values.put(FilmTableHelper.WATCHED, isWatched);
+                    values.put(FilmTableHelper.WATCH, isWatch);
                     getContentResolver().update(FilmProvider.FILMS_URI, values, FilmTableHelper.FILM_ID + " = " + filmId, null);
                 } else if (calling == StaticValues.INTERNET_DETAILES){
                     saveFilm();
@@ -300,6 +315,7 @@ public class FilmDetailes extends AppCompatActivity{
         return true;
     }
 
+    // nel caso le informazioni vengano prese dal db locale aggiorna il voto prima di uscire dalla schermata
     @Override
     public void onBackPressed() {
         if(calling == StaticValues.LOCAL_DETAILES) {

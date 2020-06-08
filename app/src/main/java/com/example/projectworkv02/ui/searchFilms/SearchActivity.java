@@ -41,7 +41,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
+// activity che permette di fare la ricerca in internet e nel db locale
 public class SearchActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private String string;
@@ -65,6 +65,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
 
         recyclerView = findViewById(R.id.searchedFilms);
         GridLayoutManager manager;
+        // controllo sull'orientamento del telefono per decidere se mostrare due o tre film sulla stessa riga
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             manager = new GridLayoutManager(this, 3);
         } else {
@@ -74,8 +75,8 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
         adapter = new SearchedFilmsAdapter(this, films);
         recyclerView.setAdapter(adapter);
 
+        // toolbar custom per mettere la barra della ricerca
         Toolbar toolbar = findViewById(R.id.detailsToolbar2);
-
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setTitle(getText(R.string.title_find_films));
         setSupportActionBar(toolbar);
@@ -87,6 +88,8 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
+    // metodo necessario a controllare e cancellare eventuali doppioni trovati nel momento del loading di dati
+    // visto che la ricerca viene effettuata sia nel db locale che con una richiesta all'api
     private void runDuplicateControl() {
         for (int j = 0; j < films.size(); j++)
             for (int k = j + 1; k < films.size(); k++) {
@@ -98,6 +101,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
             }
     }
 
+    // metodo per fare la chiamata internet con la stringa ricercata dall'utente
     private void sendInternetRequest(final Context context, String request) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -156,6 +160,8 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        // filtra nel db per cercare film che hanno il titolo uguale in qualche modo alla stringa cercata dall'utente
+        // e crea una istranza di film che aggiunge all'array assieme ai dati cercati in internet
         if (films.size() == 0) {
             for (int i = 0; i < data.getCount(); i++) {
                 data.moveToNext();
@@ -194,6 +200,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
         MenuItem myActionMenuItem = menu.findItem( R.id.search);
         searchView = (SearchView) myActionMenuItem.getActionView();
 
+        // apertura obbligata all'avvio dell'activity della searchview
         searchView.onActionViewExpanded();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -205,15 +212,16 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
                 string = query.replaceAll("\\s+", "%20");
                 Bundle bundle = new Bundle();
                 bundle.putString("query", query);
+                // controllo se il cursor loader è già stato inizializzato e in caso lo sia lo fa restartare.
                 if (getSupportLoaderManager().getLoader(StaticValues.CURSOR_SEARCH_ID) == null) {
                     getSupportLoaderManager().initLoader(StaticValues.CURSOR_SEARCH_ID, bundle, SearchActivity.this);
                 } else {
                     getSupportLoaderManager().restartLoader(StaticValues.CURSOR_SEARCH_ID, bundle, SearchActivity.this);
                 }
+                // chiamata al metodo che fa partire una ricerca all'api
                 sendInternetRequest(SearchActivity.this, string);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;

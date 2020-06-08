@@ -28,6 +28,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
     private Cursor film;
     private LongItemClickListener longItemClickListener;
 
+    //costruttore che prende contesto e dati dal fragment
     public FilmsAdapter(Context context, Cursor film) {
         this.context = context;
         this.film = film;
@@ -45,6 +46,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         if (!film.moveToPosition(position)) {
             return;
         }
+        // creazione di un'istanza di Film per facilitare il recupero dei dati
         final Film f = new Film();
         f.setFilm_id(film.getInt(film.getColumnIndex(FilmTableHelper.FILM_ID)));
         f.setName(film.getString(film.getColumnIndex(FilmTableHelper.NAME)));
@@ -55,18 +57,15 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         f.setVote(film.getFloat(film.getColumnIndex(FilmTableHelper.API_VOTE)));
         f.setPersonalVote(film.getFloat(film.getColumnIndex(FilmTableHelper.PERSONAL_VOTE)));
 
+        // controllo che il contenuto della colonna con il link dell'immagine non sia nulla
         if (f.getImgCardboard() == null || f.getImgCardboard().equals("null") ) {
             Glide.with(context).load(R.drawable.img_placeholder).into(holder.image);
         } else {
             Glide.with(context).load(StaticValues.IMGPREFIX + f.getImgCardboard()).into(holder.image);
         }
 
-        if (f.getName() == null || f.getName().equals("")) {
-            holder.title.setText(context.getText(R.string.text_no_title).toString());
-        } else {
-            holder.title.setText(f.getName());
-        }
-
+        // controllo se il le colonne coi voti sono vuote, poi se il voto dell'utente è 0. Il voto dell'utente ha la priorità
+        // in caso ci siano entrambi.
         if (f.getPersonalVote() == 0 && f.getVote() == 0) {
             holder.vote.setText(context.getText(R.string.not_available).toString());
         } else if (f.getPersonalVote() == 0 && f.getVote() != 0) {
@@ -75,6 +74,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
             holder.vote.setText(f.getPersonalVote() + "");
         }
 
+        // al click viene lanciata l'activity FilmDetailes con i dati necessari a richiamare i dati dal db
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,13 +95,11 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
-        TextView title;
         TextView vote;
         ImageView image;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
-            title = itemView.findViewById(R.id.list_title);
             vote = itemView.findViewById(R.id.vote);
             itemView.setOnLongClickListener(this);
         }
@@ -119,10 +117,12 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         this.film = cursor;
     }
 
+    // interfaccia necessaria a far funzionare un long click listener sui film
     public interface LongItemClickListener{
         void onLongItemClick(View view, int position);
     }
 
+    // metodo per unire il listener alla reazione
     public void setLongItemClickListener(LongItemClickListener longItemClickListener) {
         this.longItemClickListener = longItemClickListener;
     }
