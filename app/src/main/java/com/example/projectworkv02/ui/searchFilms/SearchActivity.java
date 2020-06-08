@@ -53,7 +53,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_search);
+        setContentView(R.layout.activity_search);
 
         try {
             if (getLastCustomNonConfigurationInstance() != null) {
@@ -126,10 +126,11 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
                                 f.setReleaseDate(obj.getString("release_date"));
 
                                 films.add(f);
+                                runDuplicateControl();
                                 adapter.notifyDataSetChanged();
                             }
 
-                            runDuplicateControl();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -167,6 +168,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
                 f.setWatch(data.getInt(data.getColumnIndex(FilmTableHelper.WATCH)));
                 f.setVote(data.getFloat(data.getColumnIndex(FilmTableHelper.API_VOTE)));
                 f.setPersonalVote(data.getFloat(data.getColumnIndex(FilmTableHelper.PERSONAL_VOTE)));
+                f.setReleaseDate(data.getString(data.getColumnIndex(FilmTableHelper.RELEASE_DATE)));
 
                 films.add(f);
             }

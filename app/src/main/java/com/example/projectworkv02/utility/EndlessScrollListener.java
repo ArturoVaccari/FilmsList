@@ -41,7 +41,6 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     public int getLastVisibleItem(int[] lastVisibleItemPositions) {
         int maxSize = 0;
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {
-            Log.d("ciao", "getLastVisibleItem: " + lastVisibleItemPositions[i]);
             if (i == 0) {
                 maxSize = lastVisibleItemPositions[i];
             }

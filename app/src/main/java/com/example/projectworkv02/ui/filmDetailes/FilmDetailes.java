@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +48,7 @@ public class FilmDetailes extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_film_detailes);
+        setContentView(R.layout.activity_film_detailes);
 
         imageView = findViewById(R.id.largeImage);
         name = findViewById(R.id.textName);
@@ -107,7 +106,6 @@ public class FilmDetailes extends AppCompatActivity{
                 releaseDate = getIntent().getStringExtra("release_date");
                 isWatch = StaticValues.WATCH_FALSE;
                 isWatched = StaticValues.WATCHED_FALSE;
-                Log.d("adapter2", "onClick: " + imgCardboard);
             } else {
                 c.moveToNext();
                 imgUrl = c.getString(c.getColumnIndex(FilmTableHelper.IMGLARGE));
@@ -119,10 +117,7 @@ public class FilmDetailes extends AppCompatActivity{
                 vote = c.getFloat(c.getColumnIndex(FilmTableHelper.API_VOTE));
                 releaseDate = c.getString(c.getColumnIndex(FilmTableHelper.RELEASE_DATE));
                 personalVote = c.getFloat(c.getColumnIndex(FilmTableHelper.PERSONAL_VOTE));
-                Log.d("adapter3", "onClick: " + imgCardboard);
             }
-
-            Log.d("detailes", "onCreate: " + isWatch + " " + isWatched);
         }
 
         if (imgUrl == null || imgUrl.equals("null")) {

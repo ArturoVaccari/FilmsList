@@ -5,6 +5,5 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="primaryStrong">#FFAC00</color>
     <color name="primaryWeak">#FFE6B2</color>
-    <color name="secondaryStrong">#4C997F</color>
-    <color name="secondaryWeak">#7FFFd4</color>
+    <color name="linkColor">#3366BB</color>
 </resources>

@@ -55,10 +55,6 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         f.setVote(film.getFloat(film.getColumnIndex(FilmTableHelper.API_VOTE)));
         f.setPersonalVote(film.getFloat(film.getColumnIndex(FilmTableHelper.PERSONAL_VOTE)));
 
-        Log.d("filmetto", "onBindViewHolder: " + film.getInt(film.getColumnIndex(FilmTableHelper._ID)));
-        Log.d("filmetto", "onBindViewHolder: " + f.getFilm_id());
-        Log.d("filmetto", "onBindViewHolder: " + f.getName());
-        Log.d("filmetto", "onBindViewHolder: " + f.getImgCardboard());
         if (f.getImgCardboard() == null || f.getImgCardboard().equals("null") ) {
             Glide.with(context).load(R.drawable.img_placeholder).into(holder.image);
         } else {

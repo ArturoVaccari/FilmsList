@@ -69,16 +69,16 @@ public class SearchedFilmsAdapter extends RecyclerView.Adapter<SearchedFilmsAdap
             @Override
             public void onClick(View v) {
                 Log.d("adapter", "onClick: " + film.getImgCardboard());
-            Intent i = new Intent(context, FilmDetailes.class);
-            i.putExtra("calling", StaticValues.INTERNET_DETAILES);
-            i.putExtra("img_url", film.getImgLarge());
-            i.putExtra("title_film", film.getName());
-            i.putExtra("description_film", film.getDescription());
-            i.putExtra("film_id", film.getFilm_id());
-            i.putExtra("img_cardboard", film.getImgCardboard());
-            i.putExtra("vote", film.getVote());
-            i.putExtra("release_date", film.getReleaseDate());
-            context.startActivity(i);
+                Intent i = new Intent(context, FilmDetailes.class);
+                i.putExtra("calling", StaticValues.INTERNET_DETAILES);
+                i.putExtra("img_url", film.getImgLarge());
+                i.putExtra("title_film", film.getName());
+                i.putExtra("description_film", film.getDescription());
+                i.putExtra("film_id", film.getFilm_id());
+                i.putExtra("img_cardboard", film.getImgCardboard());
+                i.putExtra("vote", film.getVote());
+                i.putExtra("release_date", film.getReleaseDate());
+                context.startActivity(i);
             }
         });
 

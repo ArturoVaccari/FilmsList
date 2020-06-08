@@ -23,4 +23,10 @@
         android:label="@string/title_watched"
         tools:layout="@layout/fragment_watched_films" />
 
+    <fragment
+        android:id="@+id/navigation_infos"
+        android:name="com.example.projectworkv02.ui.infos.InfosFragment"
+        android:label="@string/title_infos"
+        tools:layout="@layout/fragment_infos" />
+
 </navigation>

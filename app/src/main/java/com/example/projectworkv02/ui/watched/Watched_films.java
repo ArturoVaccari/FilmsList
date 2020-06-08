@@ -67,16 +67,12 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        Log.d("watched", "data: " + data + ", listWatchedFilms.getAdapter(): " + listWatchedFilms.getAdapter());
-        Log.d("watched", "cursor c: " + c + ", adapter: " + adapter);
         c=data;
         if (listWatchedFilms.getAdapter() == null) {
             adapter = new FilmsAdapter(getActivity(), c);
             listWatchedFilms.setAdapter(adapter);
             adapter.setLongItemClickListener(this);
-            Log.d("watched", "getAdapter = null, adapter: " + adapter);
         } else {
-            Log.d("watched", "getAdapter != null, adapter: " + adapter);
             adapter.setCursor(c);
         }
         adapter.notifyDataSetChanged();

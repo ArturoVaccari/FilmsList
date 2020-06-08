@@ -23,7 +23,6 @@ import static com.android.volley.VolleyLog.TAG;
 public class InternetCalls {
 
     public void chiamataInternet (String tipo, String chiamata, String language, int page, String region, final Context context, final boolean applicationStart) {
-        Log.d("ciao", "chiamataInternet" + page);
 
         RequestQueue queue = Volley.newRequestQueue(context);
         String url ="https://api.themoviedb.org/3/" + tipo + "/" + chiamata + "?api_key=649482baeb3f20188d5cabbd5d83f466" +

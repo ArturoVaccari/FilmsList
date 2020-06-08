@@ -3,6 +3,7 @@
     <string name="title_home">Discover</string>
     <string name="title_dashboard">Guarda</string>
     <string name="title_watched">Visti</string>
+    <string name="title_infos">Infos</string>
     <string name="title_notifications">Notifications</string>
     <string name="text_no_title">Nessun titolo trovato</string>
     <string name="text_no_description">Nessuna descrizione trovata</string>
@@ -21,4 +22,29 @@
     <string name="title_vote">Voto:</string>
     <string name="not_available">N/A</string>
     <string name="title_desctiption">Trama</string>
+    <string name="value0_0">0.0</string>
+    <string name="value10_0">10.0</string>
+    <string name="content_infos">App sviluppata da Arturo Vaccari, per maggiori informazioni scriverere a:</string>
+    <string name="mail_reference">vaccarturo@gmail.com</string>
+    <string name="icon_made_by">Icon made by</string>
+    <string name="eye_checked_icon">Eye Checked icon</string>
+    <string name="icon_by">icon by</string>
+    <string name="freepik">Freepik</string>
+    <string name="google">Google</string>
+    <string name="icons8">Icons8</string>
+    <string name="bqlqn">bqlqn</string>
+    <string name="from">from</string>
+    <string name="flaticon">www.flaticon.com</string>
+    <string name="ic_normal_eye">Icon made by Google from www.flaticon.com</string>
+    <string name="ic_checked_eye">Icon by www.incons8.com</string>
+    <string name="ic_infos">Icon made by bqlqn from www.flaticon.com</string>
+    <string name="title_instrucions">Istruzioni</string>
+    <string name="title_attributions">Attribuzioni</string>
+    <string name="title_producer">Sviluppatore</string>
+    <string name="instructions">All\'avvio l\'app mostra una lista di film popolari.
+                                In ciascuna delle quattro schermate principali è possibile fare la ricerca di un film per titolo.
+                                E\' possibile salvare i film in una lista di film da vedere, o già visti, premendo sull\'immagine di copertina
+                                che apre i dettagli del film, e in seguito premendo sui tre puntini.
+                                Per rimuovere un film da una lista, seguire il procedimento appena illustrato, o tenere premuto a
+                                lungo su il film che si trova nella lista sbagliata.</string>
 </resources>

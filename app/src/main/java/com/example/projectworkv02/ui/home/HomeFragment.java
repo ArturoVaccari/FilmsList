@@ -71,7 +71,6 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         scrollListener = new EndlessScrollListener(manager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.d("ciao", "chiamata" + page);
                 InternetCalls i = new InternetCalls();
                 i.chiamataInternet(StaticValues.FILM, StaticValues.POPULAR, StaticValues.ITALIAN, page, StaticValues.REGION_ITALIAN, getActivity(), false);
             }
@@ -82,13 +81,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        if (id == 1) {
-            cursorLoader = new CursorLoader(getActivity(), FilmProvider.FILMS_URI, null, null, null, null);
-        } else if (args != null){
-            String name = args.getString("filter");
-            cursorLoader = new CursorLoader(getActivity(), FilmProvider.FILMS_URI, null, FilmTableHelper.NAME + " LIKE '%" + name + "%' ", null, null);
-        }
-        return cursorLoader;
+          return cursorLoader = new CursorLoader(getActivity(), FilmProvider.FILMS_URI, null, FilmTableHelper.WATCH + " IS NOT " + StaticValues.WATCH_TRUE + " AND " + FilmTableHelper.WATCHED + " IS NOT " + StaticValues.WATCHED_TRUE, null, null);
     }
 
     @Override

@@ -64,17 +64,13 @@ public class WatchFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        Log.d("watch", "data: " + data + ", listWatchFilms.getAdapter(): " + listWatchFilms.getAdapter());
-        Log.d("watch", "cursor c: " + c + ", adapter: " + adapter);
         c=data;
 
         if(listWatchFilms.getAdapter() == null){
             adapter = new FilmsAdapter(getActivity(), c);
             listWatchFilms.setAdapter(adapter);
             adapter.setLongItemClickListener(this);
-            Log.d("watch", "getAdapter = null ");
         } else {
-            Log.d("watch", "getAdapter != null ");
             adapter.setCursor(c);
         }
         adapter.notifyDataSetChanged();

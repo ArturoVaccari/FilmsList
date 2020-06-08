@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.infos.InfosFragment"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="12dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/title_instrucions"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/instructions"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/title_attributions"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_film"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_made_by"
+            android:textSize="14sp"
+            android:paddingStart="12dp"/>
+
+        <TextView
+            android:id="@+id/freepikLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/freepik"
+            android:textColor="@color/linkColor"
+            android:textSize="14sp"
+            android:paddingHorizontal="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/from"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/flaticonLink1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/flaticon"
+            android:textSize="14sp"
+            android:textColor="@color/linkColor"
+            android:paddingHorizontal="4dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_eye"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_made_by"
+            android:textSize="14sp"
+            android:paddingStart="12dp"/>
+
+        <TextView
+            android:id="@+id/googleLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/google"
+            android:textSize="14sp"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/linkColor"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/from"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/flaticonLink2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/flaticon"
+            android:textSize="14sp"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/linkColor"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/icons8_eye_checked_96"/>
+
+        <TextView
+            android:id="@+id/eyeCheckedIconLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/eye_checked_icon"
+            android:textSize="14sp"
+            android:paddingStart="12dp"
+            android:textColor="@color/linkColor"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_by"
+            android:textSize="14sp"
+            android:paddingHorizontal="4dp"/>
+
+        <TextView
+            android:id="@+id/icons8Link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icons8"
+            android:textSize="14sp"
+            android:textColor="@color/linkColor"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_information"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_made_by"
+            android:textSize="14sp"
+            android:paddingStart="12dp"/>
+
+        <TextView
+            android:id="@+id/bqlqnLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bqlqn"
+            android:textSize="14sp"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/linkColor"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/from"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/flaticonLink3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/flaticon"
+            android:textSize="14sp"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/linkColor"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/title_producer"/>
+
+    <TextView
+        android:id="@+id/textReferences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/content_infos"/>
+    <TextView
+        android:id="@+id/mailReference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/mail_reference"
+        android:gravity="center"/>
+
+</LinearLayout>
