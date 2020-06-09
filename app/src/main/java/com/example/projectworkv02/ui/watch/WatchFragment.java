@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,8 @@ public class WatchFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         //riempie il cursore con i dati presi dal db filtrando i film che hanno watch == 1(true)
         c=data;
+        Log.d("watch", "get adapter " + listWatchFilms.getAdapter());
+        Log.d("watch", "adapter " + adapter);
         if(listWatchFilms.getAdapter() == null){
             adapter = new FilmsAdapter(getActivity(), c);
             listWatchFilms.setAdapter(adapter);

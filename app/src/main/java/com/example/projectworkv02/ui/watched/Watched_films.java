@@ -70,7 +70,7 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         //riempie il cursore con i dati presi dal db filtrando i film che hanno watched == 1(true)
         c=data;
-        Log.d("watched", "get loader " + listWatchedFilms.getAdapter());
+        Log.d("watched", "get adapter " + listWatchedFilms.getAdapter());
         Log.d("watched", "adapter " + adapter);
         if (listWatchedFilms.getAdapter() == null) {
             adapter = new FilmsAdapter(getActivity(), c);
