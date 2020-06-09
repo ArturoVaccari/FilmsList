@@ -3,7 +3,6 @@ package com.example.projectworkv02.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,8 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.projectworkv02.R;
-import com.example.projectworkv02.database.FilmProvider;
-import com.example.projectworkv02.database.FilmTableHelper;
 
 //fragment che crea un dialog per chiedere conferma o annulla di operazioni
 public class ConfirmDialog extends DialogFragment {

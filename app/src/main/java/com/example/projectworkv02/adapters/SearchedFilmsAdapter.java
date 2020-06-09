@@ -2,7 +2,6 @@ package com.example.projectworkv02.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,8 +16,6 @@ import com.example.projectworkv02.R;
 import com.example.projectworkv02.ui.filmDetailes.FilmDetailes;
 import com.example.projectworkv02.utility.StaticValues;
 import com.example.projectworkv02.database.Film;
-import com.example.projectworkv02.fragments.ConfirmDialog;
-import com.example.projectworkv02.fragments.ConfirmDialogListener;
 
 import java.util.ArrayList;
 
@@ -68,9 +63,7 @@ public class SearchedFilmsAdapter extends RecyclerView.Adapter<SearchedFilmsAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("adapter", "onClick: " + film.getImgCardboard());
                 Intent i = new Intent(context, FilmDetailes.class);
-                i.putExtra("calling", StaticValues.INTERNET_DETAILES);
                 i.putExtra("img_url", film.getImgLarge());
                 i.putExtra("title_film", film.getName());
                 i.putExtra("description_film", film.getDescription());

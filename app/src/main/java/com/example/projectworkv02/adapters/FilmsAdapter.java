@@ -3,7 +3,6 @@ package com.example.projectworkv02.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +78,6 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, FilmDetailes.class);
-                i.putExtra("calling", StaticValues.LOCAL_DETAILES);
                 i.putExtra("film_id", f.getFilm_id());
                 context.startActivity(i);
             }

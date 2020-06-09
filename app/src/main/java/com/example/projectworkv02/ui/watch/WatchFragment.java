@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,7 @@ import com.example.projectworkv02.adapters.FilmsAdapter;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
 import com.example.projectworkv02.fragments.ConfirmDialogListener;
+
 // il fragment filtra i film filtrandoli dove watch == 1(true)
 public class WatchFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, FilmsAdapter.LongItemClickListener, ConfirmDialogListener{
 

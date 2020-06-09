@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +64,7 @@ public class FilmDetailes extends AppCompatActivity{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // controllo per sapere da cosa è stata chiamata l'activity
+                // controllo per sapere se i dati vengono presi dal db
                 if (calling == StaticValues.LOCAL_DETAILES){
                     updateVote();
                 } else {
@@ -74,51 +73,33 @@ public class FilmDetailes extends AppCompatActivity{
             }
         });
 
-        calling = getIntent().getIntExtra("calling", 0);
         filmId = getIntent().getLongExtra("film_id", 0);
+        c = getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper.FILM_ID + " = " + filmId, null, null, null);
 
         // metodo che ottiene i dati da mostrare in base a cosa ha chiamato quest'activity
-        if (calling == StaticValues.LOCAL_DETAILES) {
+        if (c.getCount() == 0) {
+            calling = StaticValues.INTERNET_DETAILES;
+            imgUrl = getIntent().getStringExtra("img_url");
+            title = getIntent().getStringExtra("title_film");
+            descriptionFilm = getIntent().getStringExtra("description_film");
+            imgCardboard = getIntent().getStringExtra("img_cardboard");
+            vote = getIntent().getFloatExtra("vote", 0);
+            releaseDate = getIntent().getStringExtra("release_date");
+            isWatch = StaticValues.WATCH_FALSE;
+            isWatched = StaticValues.WATCHED_FALSE;
 
-            c = getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper.FILM_ID + " = " + filmId, null, null, null);
+        } else {
+            calling = StaticValues.LOCAL_DETAILES;
             c.moveToNext();
             imgUrl = c.getString(c.getColumnIndex(FilmTableHelper.IMGLARGE));
+            imgCardboard = c.getString(c.getColumnIndex(FilmTableHelper.IMGCARDBOARD));
             title = c.getString(c.getColumnIndex(FilmTableHelper.NAME));
             descriptionFilm = c.getString(c.getColumnIndex(FilmTableHelper.DESCRIPTION));
             isWatch = c.getInt(c.getColumnIndex(FilmTableHelper.WATCH));
             isWatched = c.getInt(c.getColumnIndex(FilmTableHelper.WATCHED));
-            releaseDate = c.getString(c.getColumnIndex(FilmTableHelper.RELEASE_DATE));
             vote = c.getFloat(c.getColumnIndex(FilmTableHelper.API_VOTE));
+            releaseDate = c.getString(c.getColumnIndex(FilmTableHelper.RELEASE_DATE));
             personalVote = c.getFloat(c.getColumnIndex(FilmTableHelper.PERSONAL_VOTE));
-
-        } else if (calling == StaticValues.INTERNET_DETAILES) {
-
-            try {
-                c = getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper.FILM_ID + " = " + filmId, null, null, null);
-            } catch (Exception e){
-                Log.e("errore", "" + e);
-            }
-            if (c.getCount() == 0) {
-                imgUrl = getIntent().getStringExtra("img_url");
-                title = getIntent().getStringExtra("title_film");
-                descriptionFilm = getIntent().getStringExtra("description_film");
-                imgCardboard = getIntent().getStringExtra("img_cardboard");
-                vote = getIntent().getFloatExtra("vote", 0);
-                releaseDate = getIntent().getStringExtra("release_date");
-                isWatch = StaticValues.WATCH_FALSE;
-                isWatched = StaticValues.WATCHED_FALSE;
-            } else {
-                c.moveToNext();
-                imgUrl = c.getString(c.getColumnIndex(FilmTableHelper.IMGLARGE));
-                imgCardboard = c.getString(c.getColumnIndex(FilmTableHelper.IMGCARDBOARD));
-                title = c.getString(c.getColumnIndex(FilmTableHelper.NAME));
-                descriptionFilm = c.getString(c.getColumnIndex(FilmTableHelper.DESCRIPTION));
-                isWatch = c.getInt(c.getColumnIndex(FilmTableHelper.WATCH));
-                isWatched = c.getInt(c.getColumnIndex(FilmTableHelper.WATCHED));
-                vote = c.getFloat(c.getColumnIndex(FilmTableHelper.API_VOTE));
-                releaseDate = c.getString(c.getColumnIndex(FilmTableHelper.RELEASE_DATE));
-                personalVote = c.getFloat(c.getColumnIndex(FilmTableHelper.PERSONAL_VOTE));
-            }
         }
 
         // controllo se il link dell'immagine da mostrare è nullo o vuoto ed in caso carica l'immagine
@@ -230,6 +211,8 @@ public class FilmDetailes extends AppCompatActivity{
         contentValues.put(FilmTableHelper.PERSONAL_VOTE, personalVote);
 
         getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
+        // siccome ora il film si trova nel db, "calling" cambia valore per mostrarlo
+        calling = StaticValues.LOCAL_DETAILES;
     }
 
     // menu nella toolbar contenente le 4 opzioni per aggiungere/rimuovere i film dalla lista di watch e/o watched
@@ -315,7 +298,7 @@ public class FilmDetailes extends AppCompatActivity{
         return true;
     }
 
-    // nel caso le informazioni vengano prese dal db locale aggiorna il voto prima di uscire dalla schermata
+    // nel caso le informazioni vengano prese dal db locale, aggiorna il voto prima di uscire dalla schermata
     @Override
     public void onBackPressed() {
         if(calling == StaticValues.LOCAL_DETAILES) {

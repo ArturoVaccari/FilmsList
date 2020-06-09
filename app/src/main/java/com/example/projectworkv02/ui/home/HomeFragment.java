@@ -1,16 +1,12 @@
 package com.example.projectworkv02.ui.home;
 
-import android.content.ContentValues;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,14 +17,13 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projectworkv02.internet.BulkDownloadSupport;
 import com.example.projectworkv02.utility.EndlessScrollListener;
 import com.example.projectworkv02.utility.StaticValues;
 import com.example.projectworkv02.adapters.FilmsAdapter;
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
-import com.example.projectworkv02.fragments.ConfirmDialogListener;
-import com.example.projectworkv02.internet.InternetCalls;
 
 // il fragment mostra tutti i film scaricati che non siano tra quelli da vedere o quelli visti
 public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -72,8 +67,9 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         scrollListener = new EndlessScrollListener(manager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                InternetCalls i = new InternetCalls();
-                i.chiamataInternet(StaticValues.FILM, StaticValues.POPULAR, StaticValues.ITALIAN, page, StaticValues.REGION_ITALIAN, getActivity(), false);
+                BulkDownloadSupport bulkDownloadSupport = new BulkDownloadSupport();
+                Log.d("internet", "page " + page);
+                bulkDownloadSupport.askFilms(getActivity());
             }
         };
         recyclerView.addOnScrollListener(scrollListener);

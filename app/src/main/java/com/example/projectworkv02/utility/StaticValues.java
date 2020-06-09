@@ -4,6 +4,7 @@ package com.example.projectworkv02.utility;
 public class StaticValues {
     public static final String CHIAMATA500 = "500";
     public static final String FILM = "movie";
+    public static final String SEARCH = "search";
     public static final String UPCOMING = "upcoming";
     public static final String POPULAR = "popular";
     public static final String ITALIAN = "it-IT";

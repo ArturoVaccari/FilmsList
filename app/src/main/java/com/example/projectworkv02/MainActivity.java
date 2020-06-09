@@ -5,9 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.projectworkv02.internet.InternetCalls;
+import com.example.projectworkv02.internet.BulkDownloadSupport;
 import com.example.projectworkv02.ui.searchFilms.SearchActivity;
-import com.example.projectworkv02.utility.StaticValues;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,13 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(actionBar);
         NavigationUI.setupWithNavController(navView, navController);
 
-        askFilms();
-    }
-
-    // metodo che richiama la classe usata per fare una chiamata ad internet all'avvio dell'app
-    public void askFilms() {
-        InternetCalls i = new InternetCalls();
-        i.chiamataInternet(StaticValues.FILM, StaticValues.POPULAR, StaticValues.ITALIAN, StaticValues.page, StaticValues.REGION_ITALIAN, getApplicationContext(), true);
+        BulkDownloadSupport bulkDownloadSupport = new BulkDownloadSupport();
+        bulkDownloadSupport.askFilms(this);
     }
 
     // creazione di un custom actionbar con un pulsante che avvia l'activity per la ricerca di film per titolo
@@ -53,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
        return true;
     }
 }

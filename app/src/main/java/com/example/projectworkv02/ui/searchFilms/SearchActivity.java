@@ -21,19 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.projectworkv02.R;
+import com.example.projectworkv02.internet.InternetCalls;
+import com.example.projectworkv02.internet.ServerCallback;
 import com.example.projectworkv02.utility.StaticValues;
 import com.example.projectworkv02.adapters.SearchedFilmsAdapter;
 import com.example.projectworkv02.database.Film;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,54 +96,39 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
             }
     }
 
-    // metodo per fare la chiamata internet con la stringa ricercata dall'utente
-    private void sendInternetRequest(final Context context, String request) {
+    // metodo per fare la chiamata internet con la stringa ricercata dall'utente. Viene mostrata sempre solo la prima pagina dei risultati.
+    public void searchFilm(String query, final Context context){
+        InternetCalls internetCalls = new InternetCalls();
 
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://api.themoviedb.org/3/search/movie?api_key=649482baeb3f20188d5cabbd5d83f466&language=it-IT&query=" + request + "&page=1&region=IT";
+        String url ="https://api.themoviedb.org/3/" + StaticValues.SEARCH + "/" + StaticValues.FILM + "?api_key=649482baeb3f20188d5cabbd5d83f466" +
+                "&language=" + StaticValues.ITALIAN + "&query=" + query + "&page=1&region=" + StaticValues.REGION_ITALIAN;
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            JSONArray film = object.getJSONArray("results");
-
-                            for (int i = 0; i < film.length(); i++) {
-                                JSONObject obj = film.getJSONObject(i);
-
-                                Film f = new Film();
-                                f.setFilm_id(obj.getLong("id"));
-                                f.setName(obj.getString("title"));
-                                f.setDescription(obj.getString("overview"));
-                                f.setImgCardboard(obj.getString("poster_path"));
-                                f.setImgLarge(obj.getString("backdrop_path"));
-                                f.setVote(Float.valueOf(obj.getString("vote_average")));
-                                f.setReleaseDate(obj.getString("release_date"));
-
-                                films.add(f);
-                                runDuplicateControl();
-                                adapter.notifyDataSetChanged();
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        internetCalls.chiamataInternet(url, context, new ServerCallback() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("search", "onErrorResponse: ", error);
-                error.printStackTrace();
+            public void onSuccess(JSONObject object) {
+                try {
+                    JSONArray result = object.getJSONArray("results");
+                    for (int i = 0; i < result.length(); i++) {
+                        JSONObject obj = result.getJSONObject(i);
+
+                        Film f = new Film();
+                        f.setFilm_id(obj.getLong("id"));
+                        f.setName(obj.getString("title"));
+                        f.setDescription(obj.getString("overview"));
+                        f.setImgCardboard(obj.getString("poster_path"));
+                        f.setImgLarge(obj.getString("backdrop_path"));
+                        f.setVote(Float.valueOf(obj.getString("vote_average")));
+                        f.setReleaseDate(obj.getString("release_date"));
+
+                        films.add(f);
+                        runDuplicateControl();
+                        adapter.notifyDataSetChanged();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
     }
 
     @NonNull
@@ -219,7 +199,7 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
                     getSupportLoaderManager().restartLoader(StaticValues.CURSOR_SEARCH_ID, bundle, SearchActivity.this);
                 }
                 // chiamata al metodo che fa partire una ricerca all'api
-                sendInternetRequest(SearchActivity.this, string);
+                searchFilm(string, SearchActivity.this);
                 return false;
             }
             @Override
