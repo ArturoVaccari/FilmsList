@@ -106,6 +106,9 @@ public class InfosFragment extends Fragment {
                 openWebPage(s);
             }
         });
+
+        // icon for the filter
+        // <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
     }
 
     // metodo per aprire una pagina internet con il link richiesti dagli autori delle icone

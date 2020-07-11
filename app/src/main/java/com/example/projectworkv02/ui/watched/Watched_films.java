@@ -57,7 +57,6 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
             manager = new GridLayoutManager(getActivity(),2);
         }
         listWatchedFilms.setLayoutManager(manager);
-        getActivity().getSupportLoaderManager().initLoader(StaticValues.CURSOR_WATCHED_ID, null, this);
     }
 
     @NonNull
@@ -72,7 +71,7 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
         c=data;
         Log.d("watched", "get adapter " + listWatchedFilms.getAdapter());
         Log.d("watched", "adapter " + adapter);
-        if (listWatchedFilms.getAdapter() == null) {
+        if (adapter == null) {
             adapter = new FilmsAdapter(getActivity(), c);
             listWatchedFilms.setAdapter(adapter);
             adapter.setLongItemClickListener(this);
@@ -84,6 +83,7 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        c= null;
     }
 
     // al long click su un film mostra un popup per chiedere conferma della rimozione dalla lista
@@ -107,5 +107,15 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onNegativePressed() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getLoaderManager().getLoader(StaticValues.CURSOR_WATCHED_ID) == null) {
+            getLoaderManager().initLoader(StaticValues.CURSOR_WATCHED_ID, null, this);
+        } else {
+            getLoaderManager().restartLoader(StaticValues.CURSOR_WATCHED_ID, null, this);
+        }
     }
 }

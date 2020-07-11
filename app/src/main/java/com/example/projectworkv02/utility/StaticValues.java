@@ -19,10 +19,18 @@ public class StaticValues {
     public static final int WATCH_TRUE = 1;
     public static final int WATCHED_FALSE = 0;
     public static final int WATCHED_TRUE = 1;
+    public static final int UPDATE_FALSE = 0;
+    public static final int UPDATE_TRUE = 1;
     public static final int LOCAL_DETAILES = 0;
     public static final int INTERNET_DETAILES = 1;
     public static final int CURSOR_DISCOVER_ID = 1;
     public static final int CURSOR_WATCH_ID = 2;
     public static final int CURSOR_WATCHED_ID = 3;
     public static final int CURSOR_SEARCH_ID = 4;
+    public static final int ORDER_BY_RANDOM = 0;
+    public static final int ORDER_BY_VOTE_DESCENDING = 1;
+    public static final int ORDER_BY_VOTE_ASCENDING = 2;
+    public static final int ORDER_BY_DATE_DESCENDING = 3;
+    public static final int ORDER_BY_DATE_ASCENDING = 4;
+
 }

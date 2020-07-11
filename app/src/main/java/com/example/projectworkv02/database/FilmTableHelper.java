@@ -15,6 +15,7 @@ public class FilmTableHelper implements BaseColumns {
     public static final String API_VOTE = "api_vote";
     public static final String PERSONAL_VOTE = "personal_vote";
     public static final String RELEASE_DATE = "release_date";
+    public static final String UPDATE = "update_film";
 
     public static final String CREATE = "CREATE TABLE " + TABLE_NAME + " ( " +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -27,6 +28,7 @@ public class FilmTableHelper implements BaseColumns {
             RELEASE_DATE + " TEXT , " +
             FILM_ID + " INTEGER , " +
             WATCHED + " INTEGER , " +
+            UPDATE + " INTEGER , " +
             WATCH + " INTEGER ) ;";
 }
 

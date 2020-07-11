@@ -13,6 +13,7 @@ public class Film {
     private int watch;
     private int watched;
     private long film_id;
+    private int update;
 
     public Film() {}
 
@@ -102,5 +103,13 @@ public class Film {
 
     public void setPersonalVote(float personalVote) {
         this.personalVote = personalVote;
+    }
+
+    public int getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(int update) {
+        this.update = update;
     }
 }

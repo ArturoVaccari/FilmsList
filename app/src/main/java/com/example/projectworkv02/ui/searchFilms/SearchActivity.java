@@ -190,8 +190,9 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
                 adapter.notifyDataSetChanged();
                 searchView.onActionViewCollapsed();
                 string = query.replaceAll("\\s+", "%20");
+                String askDB = query.replace("'", "''");
                 Bundle bundle = new Bundle();
-                bundle.putString("query", query);
+                bundle.putString("query", askDB);
                 // controllo se il cursor loader è già stato inizializzato e in caso lo sia lo fa restartare.
                 if (getSupportLoaderManager().getLoader(StaticValues.CURSOR_SEARCH_ID) == null) {
                     getSupportLoaderManager().initLoader(StaticValues.CURSOR_SEARCH_ID, bundle, SearchActivity.this);

@@ -71,6 +71,7 @@ public class SearchedFilmsAdapter extends RecyclerView.Adapter<SearchedFilmsAdap
                 i.putExtra("img_cardboard", film.getImgCardboard());
                 i.putExtra("vote", film.getVote());
                 i.putExtra("release_date", film.getReleaseDate());
+                i.putExtra("update", StaticValues.UPDATE_TRUE);
                 context.startActivity(i);
             }
         });

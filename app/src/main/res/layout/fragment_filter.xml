@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.FilterFragment"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_title"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginVertical="24dp"
+        android:layout_marginHorizontal="24dp"/>
+
+    <Button
+        android:id="@+id/filterRandom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_random"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginHorizontal="24dp"/>
+
+    <Button
+        android:id="@+id/filterVoteDescending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_vote_discending"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginHorizontal="24dp"/>
+
+    <Button
+        android:id="@+id/filterVoteAscending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_vote_ascending"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginHorizontal="24dp"/>
+
+    <Button
+        android:id="@+id/filterDateDescending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_release_discending"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginHorizontal="24dp"/>
+
+    <Button
+        android:id="@+id/filterDateAscending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_release_ascending"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginHorizontal="24dp"/>
+
+    <Button
+        android:id="@+id/exitFilterDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/exit"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:layout_marginVertical="24dp"
+        android:layout_marginHorizontal="24dp"/>
+
+</LinearLayout>

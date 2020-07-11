@@ -43,4 +43,11 @@
                                 vedere, o già visti, premendo sull\'immagine di copertina che apre i dettagli, e in seguito premendo
                                 sui tre puntini in alto a destra.\nPer rimuovere un film da una lista, seguire il procedimento appena
                                 illustrato, o tenere premuto a lungo su il film che si trova nella lista sbagliata.</string>
+    <string name="filter_random">Originale</string>
+    <string name="filter_vote_discending">Voto Decrescente</string>
+    <string name="filter_vote_ascending">Voto Crescente</string>
+    <string name="filter_release_discending">Data Uscita Descrescente</string>
+    <string name="filter_release_ascending">Data Uscita Crescente</string>
+    <string name="exit">Esci</string>
+    <string name="filter_title">Ordina per:</string>
 </resources>

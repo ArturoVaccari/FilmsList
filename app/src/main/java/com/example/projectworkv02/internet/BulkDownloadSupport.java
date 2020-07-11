@@ -54,13 +54,15 @@ public class BulkDownloadSupport {
                 contentValues.put(FilmTableHelper.IMGLARGE, obj.getString("backdrop_path"));
                 contentValues.put(FilmTableHelper.API_VOTE, obj.getString("vote_average"));
                 contentValues.put(FilmTableHelper.RELEASE_DATE, obj.getString("release_date"));
+                contentValues.put(FilmTableHelper.UPDATE, StaticValues.UPDATE_FALSE);
                 Cursor c = context.getContentResolver().query(FilmProvider.FILMS_URI, null, FilmTableHelper.FILM_ID + " = " + id, null, null);
                 if (c.getCount() == 0) {
                     filmCounter++;
                     context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
-                } else {
-                    context.getContentResolver().update(FilmProvider.FILMS_URI, contentValues, FilmTableHelper.FILM_ID + " = " + id, null);
                 }
+                //else {
+                  //  context.getContentResolver().update(FilmProvider.FILMS_URI, contentValues, FilmTableHelper.FILM_ID + " = " + id, null);
+                //}
 
             }
         } catch (JSONException e) {

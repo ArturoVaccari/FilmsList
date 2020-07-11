@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.projectworkv02.R;
+import com.example.projectworkv02.database.Film;
 import com.example.projectworkv02.utility.StaticValues;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
@@ -43,6 +44,7 @@ public class FilmDetailes extends AppCompatActivity{
     private MenuItem remove_watched;
     private int isWatch;
     private int isWatched;
+    private int needUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class FilmDetailes extends AppCompatActivity{
             imgCardboard = getIntent().getStringExtra("img_cardboard");
             vote = getIntent().getFloatExtra("vote", 0);
             releaseDate = getIntent().getStringExtra("release_date");
+            needUpdate = getIntent().getIntExtra("update", StaticValues.UPDATE_TRUE);
             isWatch = StaticValues.WATCH_FALSE;
             isWatched = StaticValues.WATCHED_FALSE;
 
@@ -100,6 +103,7 @@ public class FilmDetailes extends AppCompatActivity{
             vote = c.getFloat(c.getColumnIndex(FilmTableHelper.API_VOTE));
             releaseDate = c.getString(c.getColumnIndex(FilmTableHelper.RELEASE_DATE));
             personalVote = c.getFloat(c.getColumnIndex(FilmTableHelper.PERSONAL_VOTE));
+            needUpdate = c.getInt(c.getColumnIndex(FilmTableHelper.UPDATE));
         }
 
         // controllo se il link dell'immagine da mostrare è nullo o vuoto ed in caso carica l'immagine
@@ -209,6 +213,7 @@ public class FilmDetailes extends AppCompatActivity{
         contentValues.put(FilmTableHelper.API_VOTE, vote);
         contentValues.put(FilmTableHelper.RELEASE_DATE, releaseDate);
         contentValues.put(FilmTableHelper.PERSONAL_VOTE, personalVote);
+        contentValues.put(FilmTableHelper.UPDATE, needUpdate);
 
         getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
         // siccome ora il film si trova nel db, "calling" cambia valore per mostrarlo
