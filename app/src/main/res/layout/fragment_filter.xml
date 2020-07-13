@@ -68,6 +68,26 @@
         android:layout_marginHorizontal="24dp"/>
 
     <Button
+        android:id="@+id/filterNameAscending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_name_ascending"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginHorizontal="24dp"/>
+
+    <Button
+        android:id="@+id/filterNameDescending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_name_discending"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginHorizontal="24dp"/>
+
+    <Button
         android:id="@+id/exitFilterDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

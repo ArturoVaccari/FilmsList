@@ -42,7 +42,6 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     private Cursor c;
     private Bundle args = new Bundle();
     private static final String ORDERBY = "order_by";
-    private String orderby;
 
     public HomeFragment (){
     }
@@ -105,7 +104,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         String order ;
         if (args == null || args.getString(ORDERBY).equals("null")){
-             order = orderby;
+             order = null;
         } else {
             order = args.getString(ORDERBY);
         }
@@ -132,7 +131,6 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("lifecycle", "onResume: ");
         if (getLoaderManager().getLoader(StaticValues.CURSOR_DISCOVER_ID) == null){
             getLoaderManager().initLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
         } else {
@@ -145,27 +143,30 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         switch (orderId) {
             case StaticValues.ORDER_BY_VOTE_DESCENDING:
                 args.putString(ORDERBY, FilmTableHelper.API_VOTE +" DESC");
-                getLoaderManager().destroyLoader(StaticValues.CURSOR_DISCOVER_ID);
-                getLoaderManager().initLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
+                getLoaderManager().restartLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
                 break;
             case StaticValues.ORDER_BY_VOTE_ASCENDING:
                 args.putString(ORDERBY, FilmTableHelper.API_VOTE);
-                getLoaderManager().destroyLoader(StaticValues.CURSOR_DISCOVER_ID);
-                getLoaderManager().initLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
+                getLoaderManager().restartLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
                 break;
             case StaticValues.ORDER_BY_DATE_DESCENDING:
                 args.putString(ORDERBY, FilmTableHelper.RELEASE_DATE +" DESC");
-                getLoaderManager().destroyLoader(StaticValues.CURSOR_DISCOVER_ID);
-                getLoaderManager().initLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
+                getLoaderManager().restartLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
                 break;
             case StaticValues.ORDER_BY_DATE_ASCENDING:
                 args.putString(ORDERBY, FilmTableHelper.RELEASE_DATE);
-                getLoaderManager().destroyLoader(StaticValues.CURSOR_DISCOVER_ID);
-                getLoaderManager().initLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
+                getLoaderManager().restartLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
+                break;
+            case StaticValues.ORDER_BY_NAME_ASCENDING:
+                args.putString(ORDERBY, FilmTableHelper.NAME);
+                getLoaderManager().restartLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
+                break;
+            case StaticValues.ORDER_BY_NAME_DESCENDING:
+                args.putString(ORDERBY, FilmTableHelper.NAME + " DESC");
+                getLoaderManager().restartLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
                 break;
             default: args.putString(ORDERBY, FilmTableHelper._ID);
-                getLoaderManager().destroyLoader(StaticValues.CURSOR_DISCOVER_ID);
-                getLoaderManager().initLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
+                getLoaderManager().restartLoader(StaticValues.CURSOR_DISCOVER_ID, args, HomeFragment.this);
         }
     }
 }

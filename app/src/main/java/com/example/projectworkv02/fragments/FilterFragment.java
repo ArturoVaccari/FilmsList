@@ -14,7 +14,8 @@ import com.example.projectworkv02.utility.StaticValues;
 
 public class FilterFragment extends DialogFragment {
 
-    private Button orderRandom, orderVoteDescending, orderVoteAscending, orderDateDescending, orderDateAscending, exit;
+    private Button orderRandom, orderVoteDescending, orderVoteAscending, orderDateDescending, orderDateAscending, exit,
+            orderNameDescending, orderNameAscending;
     private FilterFragmentListener listener;
 
 
@@ -38,6 +39,8 @@ public class FilterFragment extends DialogFragment {
         orderVoteAscending = v.findViewById(R.id.filterVoteAscending);
         orderDateDescending = v.findViewById(R.id.filterDateDescending);
         orderDateAscending = v.findViewById(R.id.filterDateAscending);
+        orderNameAscending = v.findViewById(R.id.filterNameAscending);
+        orderNameDescending = v.findViewById(R.id.filterNameDescending);
         exit = v.findViewById(R.id.exitFilterDialog);
 
         orderRandom.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +79,22 @@ public class FilterFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 listener.orderBy(StaticValues.ORDER_BY_DATE_ASCENDING);
+                dismiss();
+            }
+        });
+
+        orderNameAscending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.orderBy(StaticValues.ORDER_BY_NAME_ASCENDING);
+                dismiss();
+            }
+        });
+
+        orderNameDescending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.orderBy(StaticValues.ORDER_BY_NAME_DESCENDING);
                 dismiss();
             }
         });

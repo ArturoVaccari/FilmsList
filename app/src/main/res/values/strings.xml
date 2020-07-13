@@ -50,4 +50,6 @@
     <string name="filter_release_ascending">Data Uscita Crescente</string>
     <string name="exit">Esci</string>
     <string name="filter_title">Ordina per:</string>
+    <string name="filter_name_ascending">Titolo A->Z</string>
+    <string name="filter_name_discending">Titolo Z->A</string>
 </resources>

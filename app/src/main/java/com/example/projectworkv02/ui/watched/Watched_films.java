@@ -48,7 +48,7 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(R.string.title_watched);
 
-        listWatchedFilms = getActivity().findViewById(R.id.list_watched);
+        listWatchedFilms = view.findViewById(R.id.list_watched);
         GridLayoutManager manager;
         // controllo sull'orientamento del telefono per decidere se mostrare due o tre film sulla stessa riga
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
@@ -71,7 +71,7 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
         c=data;
         Log.d("watched", "get adapter " + listWatchedFilms.getAdapter());
         Log.d("watched", "adapter " + adapter);
-        if (adapter == null) {
+        if (listWatchedFilms.getAdapter() == null) {
             adapter = new FilmsAdapter(getActivity(), c);
             listWatchedFilms.setAdapter(adapter);
             adapter.setLongItemClickListener(this);
