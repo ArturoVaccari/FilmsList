@@ -196,6 +196,48 @@
             android:textColor="@color/linkColor"/>
     </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_filter"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_made_by"
+                android:textSize="14sp"
+                android:paddingStart="12dp"/>
+
+            <TextView
+                android:id="@+id/freepikLink2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/freepik"
+                android:textColor="@color/linkColor"
+                android:textSize="14sp"
+                android:paddingHorizontal="4dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/from"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/flaticonLink4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flaticon"
+                android:textSize="14sp"
+                android:textColor="@color/linkColor"
+                android:paddingHorizontal="4dp"/>
+        </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

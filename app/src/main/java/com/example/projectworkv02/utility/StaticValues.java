@@ -34,5 +34,4 @@ public class StaticValues {
     public static final int ORDER_BY_DATE_ASCENDING = 4;
     public static final int ORDER_BY_NAME_DESCENDING = 5;
     public static final int ORDER_BY_NAME_ASCENDING = 6;
-
 }

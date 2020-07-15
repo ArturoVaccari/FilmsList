@@ -6,6 +6,7 @@
     <string name="title_infos">Infos</string>
     <string name="text_no_title">Nessun titolo trovato</string>
     <string name="text_no_description">Nessuna descrizione trovata</string>
+    <string name="text_no_data">Nessuna data trovata</string>
     <string name="cancel">Annulla</string>
     <string name="confirm">Conferma</string>
     <string name="search">Cerca film</string>
@@ -43,7 +44,7 @@
                                 vedere, o già visti, premendo sull\'immagine di copertina che apre i dettagli, e in seguito premendo
                                 sui tre puntini in alto a destra.\nPer rimuovere un film da una lista, seguire il procedimento appena
                                 illustrato, o tenere premuto a lungo su il film che si trova nella lista sbagliata.</string>
-    <string name="filter_random">Originale</string>
+    <string name="filter_random">Ordine di download</string>
     <string name="filter_vote_discending">Voto Decrescente</string>
     <string name="filter_vote_ascending">Voto Crescente</string>
     <string name="filter_release_discending">Data Uscita Descrescente</string>

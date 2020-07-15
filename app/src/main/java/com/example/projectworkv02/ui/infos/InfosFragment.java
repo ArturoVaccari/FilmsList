@@ -42,6 +42,8 @@ public class InfosFragment extends Fragment {
         TextView icons8 = getActivity().findViewById(R.id.icons8Link);
         TextView bqlqn = getActivity().findViewById(R.id.bqlqnLink);
         TextView flaticon3 = getActivity().findViewById(R.id.flaticonLink3);
+        TextView freepik2 = getActivity().findViewById(R.id.freepikLink2);
+        TextView flaticon4 = getActivity().findViewById(R.id.flaticonLink4);
 
         freepik.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,8 +109,22 @@ public class InfosFragment extends Fragment {
             }
         });
 
-        // icon for the filter
-        // <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        freepik2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = "https://www.flaticon.com/authors/freepik";
+                openWebPage(s);
+            }
+        });
+
+        flaticon4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = "https://www.flaticon.com/";
+                openWebPage(s);
+            }
+        });
+
     }
 
     // metodo per aprire una pagina internet con il link richiesti dagli autori delle icone

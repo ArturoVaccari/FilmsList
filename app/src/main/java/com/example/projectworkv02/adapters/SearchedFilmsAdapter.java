@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.ui.filmDetailes.FilmDetailes;
 import com.example.projectworkv02.utility.StaticValues;
@@ -43,11 +44,8 @@ public class SearchedFilmsAdapter extends RecyclerView.Adapter<SearchedFilmsAdap
         final long id = film.getFilm_id();
 
         // controllo che il contenuto della colonna con il link dell'immagine non sia nulla
-        if (film.getImgCardboard() == null || film.getImgCardboard().equals("null")) {
-            Glide.with(context).load(R.drawable.img_placeholder).into(holder.image);
-        } else {
-            Glide.with(context).load(StaticValues.IMGPREFIX + film.getImgCardboard()).into(holder.image);
-        }
+        Glide.with(context).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.img_placeholder).error(R.drawable.img_placeholder)).
+                load(StaticValues.IMGPREFIX + film.getImgCardboard()).into(holder.image);
 
         // controllo se il le colonne coi voti sono vuote, poi se il voto dell'utente è 0. Il voto dell'utente ha la priorità
         // in caso ci siano entrambi.

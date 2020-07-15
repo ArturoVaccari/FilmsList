@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import com.example.projectworkv02.R;
@@ -46,11 +47,15 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
     private SearchedFilmsAdapter adapter;
     private ArrayList<Film> films = new ArrayList<>();
     private SearchView searchView;
+    private int totalFilms = 0;
+    private ImageView nothingFound;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        nothingFound = findViewById(R.id.nothingFoundImage);
 
         try {
             if (getLastCustomNonConfigurationInstance() != null) {
@@ -123,9 +128,11 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
                         f.setReleaseDate(obj.getString("release_date"));
 
                         films.add(f);
+                        totalFilms ++;
                         runDuplicateControl();
                         adapter.notifyDataSetChanged();
                     }
+                    showNothingFound();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -159,7 +166,9 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
                 f.setReleaseDate(data.getString(data.getColumnIndex(FilmTableHelper.RELEASE_DATE)));
 
                 films.add(f);
+                totalFilms ++;
             }
+            showNothingFound();
             adapter.notifyDataSetChanged();
         }
     }
@@ -167,6 +176,16 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
+    }
+
+    private void showNothingFound() {
+        if (totalFilms == 0) {
+            recyclerView.setVisibility(View.GONE);
+            nothingFound.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            nothingFound.setVisibility(View.GONE);
+        }
     }
 
     @Nullable
@@ -188,9 +207,9 @@ public class SearchActivity extends AppCompatActivity implements LoaderManager.L
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                totalFilms = 0;
                 films.clear();
                 adapter.notifyDataSetChanged();
-                searchView.onActionViewCollapsed();
                 string = query.replaceAll("\\s+", "%20");
                 String askDB = query.replace("'", "''");
                 Bundle bundle = new Bundle();

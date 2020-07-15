@@ -3,6 +3,7 @@ package com.example.projectworkv02.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.utility.StaticValues;
 
@@ -57,11 +64,8 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MyHolder> {
         f.setPersonalVote(film.getFloat(film.getColumnIndex(FilmTableHelper.PERSONAL_VOTE)));
 
         // controllo che il contenuto della colonna con il link dell'immagine non sia nulla
-        if (f.getImgCardboard() == null || f.getImgCardboard().equals("null") ) {
-            Glide.with(context).load(R.drawable.img_placeholder).into(holder.image);
-        } else {
-            Glide.with(context).load(StaticValues.IMGPREFIX + f.getImgCardboard()).into(holder.image);
-        }
+        Glide.with(context).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.img_placeholder).error(R.drawable.img_placeholder)).
+                    load(StaticValues.IMGPREFIX + f.getImgCardboard()).into(holder.image);
 
         // controllo se il le colonne coi voti sono vuote, poi se il voto dell'utente è 0. Il voto dell'utente ha la priorità
         // in caso ci siano entrambi.

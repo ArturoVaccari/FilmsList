@@ -60,10 +60,9 @@ public class BulkDownloadSupport {
                     filmCounter++;
                     context.getContentResolver().insert(FilmProvider.FILMS_URI, contentValues);
                 }
-                //else {
-                  //  context.getContentResolver().update(FilmProvider.FILMS_URI, contentValues, FilmTableHelper.FILM_ID + " = " + id, null);
-                //}
-
+                else {
+                    context.getContentResolver().update(FilmProvider.FILMS_URI, contentValues, FilmTableHelper.FILM_ID + " = " + id, null);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

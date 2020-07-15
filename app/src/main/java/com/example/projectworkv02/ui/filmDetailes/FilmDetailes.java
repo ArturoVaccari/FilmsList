@@ -16,11 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.projectworkv02.R;
 import com.example.projectworkv02.database.Film;
 import com.example.projectworkv02.utility.StaticValues;
 import com.example.projectworkv02.database.FilmProvider;
 import com.example.projectworkv02.database.FilmTableHelper;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FilmDetailes extends AppCompatActivity{
 
@@ -107,11 +112,14 @@ public class FilmDetailes extends AppCompatActivity{
         }
 
         // controllo se il link dell'immagine da mostrare è nullo o vuoto ed in caso carica l'immagine
-        if (imgUrl == null || imgUrl.equals("null")) {
-            Glide.with(this).load(R.drawable.img_placeholder).into(imageView);
-        } else {
-            Glide.with(this).load(StaticValues.IMGPREFIX + imgUrl).into(imageView);
-        }
+        //if (imgUrl == null || imgUrl.equals("null")) {
+        //    Glide.with(this).load(R.drawable.img_placeholder).into(imageView);
+        //} else {
+        //    Glide.with(this).load(StaticValues.IMGPREFIX + imgUrl).into(imageView);
+        //}
+
+        Glide.with(this).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.img_placeholder).error(R.drawable.img_placeholder)).
+                load(StaticValues.IMGPREFIX + imgUrl).into(imageView);
 
         // controllo se il titolo del film da mostrare è nullo o vuoto ed in caso lo scrive
         if (title == null || title.equals("")) {
@@ -129,9 +137,9 @@ public class FilmDetailes extends AppCompatActivity{
 
         // controllo se il release_date del film da mostrare è nullo o vuoto ed in caso lo scrive
         if (releaseDate == null || releaseDate.equals("")) {
-            releaseDateView.setText(getText(R.string.text_no_description).toString());
+            releaseDateView.setText(getText(R.string.text_no_data).toString());
         } else {
-            releaseDateView.setText(releaseDate);
+            releaseDateView.setText(correctDate(releaseDate));
         }
 
         // controllo se il voto del film da mostrare è nullo o vuoto ed in caso lo scrive quello dell'utente
@@ -198,6 +206,24 @@ public class FilmDetailes extends AppCompatActivity{
             watched.setVisible(false);
             remove_watched.setVisible(true);
         }
+    }
+
+    private String correctDate(String time) {
+        String inputPattern = "yyyy-MM-dd";
+        String outputPattern = "dd-MM-yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
     }
 
     // metodo per salvare i dati di un film quando il film mostrato non è già presente nel db
