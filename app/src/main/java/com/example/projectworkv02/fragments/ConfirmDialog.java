@@ -15,14 +15,14 @@ import com.example.projectworkv02.R;
 public class ConfirmDialog extends DialogFragment {
 
     private long id;
-    private int message;
+    private String message;
     private ConfirmDialogListener listener;
 
     public ConfirmDialog() {
         // Required empty public constructor
     }
 
-    public ConfirmDialog(long id, int message, ConfirmDialogListener listener) {
+    public ConfirmDialog(long id, String message, ConfirmDialogListener listener) {
         this.id = id;
         this.message = message;
         this.listener = listener;
@@ -33,7 +33,7 @@ public class ConfirmDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // costruzione di un alert dialog che in caso di risposta positiva restituisce l'id del film.
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setTitle(getString(message) + "?");
+        dialog.setTitle(message + "?");
         dialog.setPositiveButton(getText(R.string.confirm).toString(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

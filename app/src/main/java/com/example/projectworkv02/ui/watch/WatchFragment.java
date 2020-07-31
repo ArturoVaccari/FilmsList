@@ -68,8 +68,6 @@ public class WatchFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         //riempie il cursore con i dati presi dal db filtrando i film che hanno watch == 1(true)
         c=data;
-        Log.d("watch", "get adapter " + listWatchFilms.getAdapter());
-        Log.d("watch", "adapter " + adapter);
         if(listWatchFilms.getAdapter() == null){
             adapter = new FilmsAdapter(getActivity(), c);
             listWatchFilms.setAdapter(adapter);
@@ -89,7 +87,8 @@ public class WatchFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onLongItemClick(View view, int position) {
         c.moveToPosition(position);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        ConfirmDialog dialogFragment = new ConfirmDialog(c.getLong(c.getColumnIndex(FilmTableHelper.FILM_ID)), R.string.remove_watch, this);
+        ConfirmDialog dialogFragment = new ConfirmDialog(c.getLong(c.getColumnIndex(FilmTableHelper.FILM_ID)), getText(R.string.remove_watch_part1)
+                + c.getString(c.getColumnIndex(FilmTableHelper.NAME)) + getText(R.string.remove_watch_part2), this);
 
         dialogFragment.show(fragmentManager, null);
     }

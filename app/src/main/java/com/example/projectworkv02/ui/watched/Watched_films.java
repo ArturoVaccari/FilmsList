@@ -91,7 +91,8 @@ public class Watched_films extends Fragment implements LoaderManager.LoaderCallb
     public void onLongItemClick(View view, int position) {
         c.moveToPosition(position);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        ConfirmDialog dialogFragment = new ConfirmDialog(c.getLong(c.getColumnIndex(FilmTableHelper.FILM_ID)), R.string.remove_watched, this);
+        ConfirmDialog dialogFragment = new ConfirmDialog(c.getLong(c.getColumnIndex(FilmTableHelper.FILM_ID)), getString(R.string.remove_watched_part1)
+                + c.getString(c.getColumnIndex(FilmTableHelper.NAME)) + getString(R.string.remove_watched_part2), this);
 
         dialogFragment.show(fragmentManager, null);
     }

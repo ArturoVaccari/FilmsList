@@ -171,21 +171,28 @@ public class FilmDetailes extends AppCompatActivity{
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                personalVote = (float) seekBar.getProgress()/10;
-                voteView.setText(personalVote + "");
+                if (seekBar.getProgress() == 0) {
+                    voteView.setText(vote + "");
+                    seekBar.setProgress((int) vote * 10);
+                } else {
+                    personalVote = (float) seekBar.getProgress() / 10;
+                    voteView.setText(personalVote + "");
+                }
             }
         });
     }
 
     // metodo per aggiornare il voto del film nel momento in cui l'utente vuole lasciare l'activity
     private void updateVote() {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(FilmTableHelper.PERSONAL_VOTE, personalVote);
-        getContentResolver().update(FilmProvider.FILMS_URI, contentValues, FilmTableHelper.FILM_ID  + " = " + filmId, null);
+        if (personalVote != vote) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(FilmTableHelper.PERSONAL_VOTE, personalVote);
+            getContentResolver().update(FilmProvider.FILMS_URI, contentValues, FilmTableHelper.FILM_ID  + " = " + filmId, null);
+        }
         finish();
     }
 
-    // metodo che controlla il valore delle variabili "isWatch" e "isWatched" e mostra le opzioni corrette per il caso
+    // metodo che controlla il valore delle variabili "isWatch" e "isWatched" e mostra le opzioni corrette per ogni caso
     private void controlWatchWatched(){
         if (isWatch == StaticValues.WATCH_FALSE){
             watch.setVisible(true);
